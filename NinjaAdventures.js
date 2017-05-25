@@ -109,7 +109,6 @@ window.addEventListener("load", function() {
 						if(Q.inputs['attack'] || this.p.attacking) {
 							this.p.sheet =  "AttackL__";
 					      	this.play("attack_left");
-					      	this.p.x += 304;
 					      	this.p.attacking = true;
 						}
 						else {
