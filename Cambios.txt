@@ -1,0 +1,25 @@
+Modificado el motor del juego:
+	Quintus_input.js:
+		Salto doble:
+			792 - Añadido atributo doubleJump.
+			890 - Añadido if para que ejecute el doble salto.
+			908 - Añadido if para controlar que sólo haga el doble salto una vez.
+		Planear:
+			790 - Añadido atributo flySpeed.
+			912 - Añadido if para que planee.
+		Deslizarse:
+			782 - Añadido atributo slidePossible.
+			783 - Añadido atrbuto sliding.
+			784 - Añadido atributo slideCounterInit.
+			785 - Añadido atributo slideCountdownInit.
+			786 - Añadido atributo slideCounter.
+			787 - Añadido atributo slideCountdown.
+			788 - Añadido atributo slideSpeed.
+			840 - Añadido if para el control del tiempo de deslizarse.
+			851 - Añadido if para el control del tiempo entre deslizos.
+			864 - Añadido if para que deslice hacia la izquierda.
+			874 - Añadido if para que deslice hacia la derecha.
+
+		887, 891, 896, 901 - Quitado botón acción (z) para saltar.
+	Quintus_2d.js:
+		489-514 intento de cambiar las colisiones.
