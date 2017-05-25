@@ -11,6 +11,8 @@ window.addEventListener("load", function() {
 	  init: function(p) {
 
 	    this._super(p, {
+	      x: 350,
+		  y: 350,
 	      sprite: "ninja_anim",
 	      sheet: "Idle__",
 	      death: false,
@@ -109,6 +111,7 @@ window.addEventListener("load", function() {
 						if(Q.inputs['attack'] || this.p.attacking) {
 							this.p.sheet =  "AttackL__";
 					      	this.play("attack_left");
+					      	this.p.x += 304;
 					      	this.p.attacking = true;
 						}
 						else {
@@ -186,10 +189,11 @@ window.addEventListener("load", function() {
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja());
-		var fan = stage.insert(new Q.Fan());
+		//var fan = stage.insert(new Q.Fan());
 
 //		stage.add("viewport").follow(player, {x: true, y: false});
 		stage.add("viewport").follow(player);
+		stage.viewport.scale = 1/3;
 	});
 
 	// Escenario Partida perdida.
