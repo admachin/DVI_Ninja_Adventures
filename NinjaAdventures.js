@@ -40,7 +40,6 @@ window.addEventListener("load", function() {
 
 		var player = stage.insert(new Q.Player());
 		var fan = stage.insert(new Q.Fan());
-		fan.follow(player);
 
 		stage.add("viewport").follow(player);
 	});
