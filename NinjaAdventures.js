@@ -137,7 +137,7 @@ window.addEventListener("load", function() {
 	}
 
 	});
-	//anim
+	//Animaciones Ninja
 	Q.animations("ninja_anim", {
 		attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false, trigger: "attacked" }, // Attack__
 		attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false, trigger: "attacked" }, // AttackL__
@@ -167,6 +167,26 @@ window.addEventListener("load", function() {
 
 		throw_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Throw__
 		throw_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // ThrowL__
+		
+		die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Dead__
+		die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // DeadL__
+	});
+	
+	
+	
+	//Animaciones Enemigo Ninja
+	Q.animations("ninjaGirl_anim", {
+		attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Attack__
+		attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // AttackL__
+
+		stand_right: { frames: [0,1,2], rate: 1/5, loop: true }, // Idle__
+		stand_left: { frames: [0,1,2], rate: 1/5, loop: true }, // IdleL__
+
+		jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Jump__
+		jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // JumpL__
+
+		run_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // Run__
+		run_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // RunL__
 		
 		die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Dead__
 		die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // DeadL__
