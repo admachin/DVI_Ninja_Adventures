@@ -184,6 +184,9 @@ window.addEventListener("load", function() {
 
 		jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Jump__
 		jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // JumpL__
+		
+		fall_right: { frames: [9], rate: 1/10, loop: false }, // Jump__
+		fall_left: { frames: [9], rate: 1/10, loop: false }, // JumpL__
 
 		run_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // Run__
 		run_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // RunL__
