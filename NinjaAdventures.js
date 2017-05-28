@@ -6,19 +6,45 @@ window.addEventListener("load", function() {
 				.touch()
 				.enableSound();
 
+
+	Q.component("defaultEnemy", {
+		extend: {
+			kill: function(collision) {
+				if(collision.obj.isA("Ninja")) {
+					
+					if(collision.obj.p.attacking == true){
+						this.destroy();
+					}
+					else{
+						collision.obj.damage(this.p.attack);
+					}
+				}
+			},
+
+			die: function(collision) {
+				if(collision.obj.isA("Ninja")) {
+					this.destroy();
+				}
+			}
+		}
+	});
+
 	Q.Sprite.extend("Ninja",{
 
 	  init: function(p) {
 
 	    this._super(p, {
 	      x: 350,
-		  y: 350,
+		  y: 1850,
 	      sprite: "ninja_anim",
 	      sheet: "Idle__",
 	      death: false,
-	      attacking: false
+	      attacking: false,
+	      life: 500,
+	      reloadTime: 0.5,
+	      reload: 0.5
 	    });
-
+	    
 	    this.add('2d, platformerControls, animation');
 
 
@@ -34,16 +60,31 @@ window.addEventListener("load", function() {
 	die: function(){
 		this.p.death = true;
 	},
-
+	damage: function(attack){
+		if(this.p.reload < 0){
+			this.p.reload = this.p.reloadTime;
+			this.p.life -= attack;
+			Q.state.inc("life", -attack);
+			console.log(this.p.life);
+			if(this.p.life <= 0){
+				this.die();
+			}
+		}
+		
+	},		
 	step: function(dt) {
+		this.p.reload-=dt;
+		if(this.p.y > 5000) {
+			this.die();
+		}
 		if(this.p.death == true) {	// Muerto.
-			this.play("die");
+			//this.play("die");
 			Q.stage().pause();
+			Q.stageScene("loseGame", 1);
 		}
 		else{						// No muerto.
 			if(Q.inputs['up']) {						// Saltos
 				if(this.p.direction == "right") {
-					console.log("salto derecha");
 					this.p.sheet =  "Jump__";
 					this.play("jump_right");
 				}
@@ -153,8 +194,8 @@ window.addEventListener("load", function() {
 		jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Jump__
 		jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // JumpL__
 
-		fall_right: { frames: [9], rate: 1/10, loop: false }, // Jump__
-		fall_left: { frames: [9], rate: 1/10, loop: false }, // JumpL__
+		fall_right: { frames: [9], loop: false }, // Jump__
+		fall_left: { frames: [9], loop: false }, // JumpL__
 
 		jumpAttack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Jump_Attack__
 		jumpAttack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Jump_AttackL__
@@ -172,10 +213,9 @@ window.addEventListener("load", function() {
 		die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // DeadL__
 	});
 	
-	
-	
+	/*
 	//Animaciones Enemigo Ninja
-	Q.animations("ninjaGirl_anim", {
+	Q.animations("enemy_anim", {
 		attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Attack__
 		attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // AttackL__
 
@@ -194,7 +234,7 @@ window.addEventListener("load", function() {
 		die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Dead__
 		die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // DeadL__
 	});
-
+	*/
 	Q.Sprite.extend("Fan", {
 		init: function(p) {
 			this._super(p, {
@@ -207,13 +247,59 @@ window.addEventListener("load", function() {
 		}
 	});
 
+	
+	Q.Sprite.extend("Enemy1", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "IdleL__",
+				vx: -100,
+				x: 2000,
+				y: 1750, 
+				attack: 100
+			});
+
+			this.add('2d, aiBounce, defaultEnemy');
+
+			this.on("bump.left, bump.right, bump.bottom", function(collision) {
+				this.kill(collision);
+			});
+
+			this.on("bump.top", function(collision) {
+				this.die(collision);
+			});
+		}
+	});
+	Q.Sprite.extend("Fin", {
+		init: function(p) {
+			this._super(p, {
+				asset: "coin",				
+				sheet: "coin",
+				x: 25200,
+				y: 548,
+				sensor: true
+			});
+			
+			this.on("sensor");
+		},
+
+		sensor: function() {
+			//Q.audio.stop("music_main");
+			//Q.audio.play("music_level_complete");
+			Q.stageScene("winGame", 1);		
+			Q.stage().pause();
+		}
+	});
+
 	// Escenario nivel 1.
 	Q.scene("level1", function(stage) {
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja());
-		//var fan = stage.insert(new Q.Fan());
+		var enemy = stage.insert(new Q.Enemy1());
+		stage.insert(new Q.Fin());
 
+		Q.state.reset({life: player.p.life});
+		Q.stageScene("HUD", 1);
 //		stage.add("viewport").follow(player, {x: true, y: false});
 		stage.add("viewport").follow(player);
 		stage.viewport.scale = 1/3;
@@ -235,6 +321,7 @@ window.addEventListener("load", function() {
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
 			y: -15 - button.p.h,
+			color: "red",
 			label: "Game Over"
 		}));
 
@@ -262,6 +349,7 @@ window.addEventListener("load", function() {
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
 			y: -15 - button.p.h,
+			color: "green",
 			label: "Win Mario"
 		}));
 
@@ -273,9 +361,25 @@ window.addEventListener("load", function() {
 		container.fit(20);
 	});
 
-	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json", function() {
+	// Escenario para el HUD.
+	Q.scene("HUD", function(stage) {
+		var label = stage.insert(new Q.UI.Text({
+			x: 100,
+			y: 35,
+			label: "Vida: 500",
+			color: "yellow"
+		}));
+		
+		Q.state.on("change.life", this, function() {
+			var coinstr = "Vida: " + Q.state.p.life;
+			label.p.label =  coinstr;
+		});
+	});
+	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json", function() {
 		Q.compileSheets("mario_small.png", "mario_small.json");
 		Q.compileSheets("ninja.png", "ninja.json");
+		Q.compileSheets("coin.png", "coin.json");
+		//Q.compileSheets("EnemyNinja.png", "EnemyNinja.json");
 		Q.stageScene("level1", 0);
 	});
 });
