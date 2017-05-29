@@ -12,7 +12,7 @@ window.addEventListener("load", function() {
 			kill: function(collision) {
 				if(collision.obj.isA("Ninja")) {
 					
-					if(collision.obj.p.attacking == true){
+					if(collision.obj.p.attacking == true || collision.obj.p.sliding == true){
 						this.destroy();
 					}
 					else{
@@ -65,7 +65,7 @@ window.addEventListener("load", function() {
 			this.p.reload = this.p.reloadTime;
 			this.p.life -= attack;
 			Q.state.inc("life", -attack);
-			console.log(this.p.life);
+			//console.log(this.p.life);
 			if(this.p.life <= 0){
 				this.die();
 			}
@@ -78,7 +78,7 @@ window.addEventListener("load", function() {
 			this.die();
 		}
 		if(this.p.death == true) {	// Muerto.
-			//this.play("die");
+			//this.play("die_" + this.p.direction);
 			Q.stage().pause();
 			Q.stageScene("loseGame", 1);
 		}
@@ -251,8 +251,8 @@ window.addEventListener("load", function() {
 	Q.Sprite.extend("Enemy1", {
 		init: function(p) {
 			this._super(p, {
-				sheet: "IdleL__",
-				vx: -100,
+				sheet: "EIdleL__",
+				vx: -200,
 				x: 2000,
 				y: 1750, 
 				attack: 100
@@ -288,6 +288,31 @@ window.addEventListener("load", function() {
 			Q.stageScene("winGame", 1);		
 			Q.stage().pause();
 		}
+	});
+
+	Q.Sprite.extend("Acid", {
+		init: function(p) {
+			this._super(p, {
+				asset: "acido",				
+				sheet: "acido",
+				sensor: true
+			});
+			
+			this.on("sensor");
+		},
+
+		sensor: function() {
+			//Q.audio.stop("music_main");
+			//Q.audio.play("music_level_complete");
+			Q.stageScene("loseGame", 1);		
+			Q.stage().pause();
+		}
+	});
+
+	//Animaciones Enemigo Ninja
+	Q.animations("acid_anim", {
+		acido: { frames: [1]}
+		
 	});
 
 	// Escenario nivel 1.
@@ -350,7 +375,7 @@ window.addEventListener("load", function() {
 			x: 0,
 			y: -15 - button.p.h,
 			color: "green",
-			label: "Win Mario"
+			label: "Win Nakamura"
 		}));
 
 		button.on("click",function() {
@@ -375,11 +400,12 @@ window.addEventListener("load", function() {
 			label.p.label =  coinstr;
 		});
 	});
-	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json", function() {
+	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json, EnemyNinja.png, EnemyNinja.json, acido.png, acido.json", function() {
 		Q.compileSheets("mario_small.png", "mario_small.json");
 		Q.compileSheets("ninja.png", "ninja.json");
 		Q.compileSheets("coin.png", "coin.json");
-		//Q.compileSheets("EnemyNinja.png", "EnemyNinja.json");
+		Q.compileSheets("acido.png", "acido.json");
+		Q.compileSheets("EnemyNinja.png", "EnemyNinja.json");
 		Q.stageScene("level1", 0);
 	});
 });

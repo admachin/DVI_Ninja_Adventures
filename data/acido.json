@@ -1,0 +1,5 @@
+{"Acid ":{"sx":0,"sy":1,"cols":2,"tilew":256,"tileh":256,"frames":2},
+"BGTile ":{"sx":0,"sy":258,"cols":7,"tilew":256,"tileh":256,"frames":7},
+"Fence ":{"sx":0,"sy":515,"cols":3,"tilew":256,"tileh":256,"frames":3},
+"Spike ":{"sx":0,"sy":772,"cols":1,"tilew":256,"tileh":256,"frames":1},
+"Tile ":{"sx":0,"sy":1029,"cols":8,"tilew":256,"tileh":256,"frames":15}}
