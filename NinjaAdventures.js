@@ -216,23 +216,23 @@ window.addEventListener("load", function() {
 	/*
 	//Animaciones Enemigo Ninja
 	Q.animations("enemy_anim", {
-		attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Attack__
-		attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // AttackL__
+		attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EAttack__
+		attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EAttackL__
 
-		stand_right: { frames: [0,1,2], rate: 1/5, loop: true }, // Idle__
-		stand_left: { frames: [0,1,2], rate: 1/5, loop: true }, // IdleL__
+		stand_right: { frames: [0,1,2], rate: 1/5, loop: true }, // EIdle__
+		stand_left: { frames: [0,1,2], rate: 1/5, loop: true }, // EIdleL__
 
-		jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Jump__
-		jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // JumpL__
+		jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJump__
+		jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJumpL__
 		
-		fall_right: { frames: [9], rate: 1/10, loop: false }, // Jump__
-		fall_left: { frames: [9], rate: 1/10, loop: false }, // JumpL__
+		fall_right: { frames: [9], rate: 1/10, loop: false }, // EJump__
+		fall_left: { frames: [9], rate: 1/10, loop: false }, // EJumpL__
 
-		run_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // Run__
-		run_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // RunL__
+		run_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // ERun__
+		run_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // ERunL__
 		
-		die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Dead__
-		die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // DeadL__
+		die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDead__
+		die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDeadL__
 	});
 	*/
 	Q.Sprite.extend("Fan", {
