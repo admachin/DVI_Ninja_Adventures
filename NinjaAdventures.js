@@ -223,7 +223,7 @@ window.addEventListener("load", function() {
 			this._super(p, {
 				sprite: "enemy_anim",
 				sheet: "EIdleL__",
-				vx: -200,
+				vx: 200,
 				x: 2000,
 				y: 1750,
 				attacking: false, 
@@ -250,11 +250,11 @@ window.addEventListener("load", function() {
 		},
 
 		finishAttack: function() {
-			if (this.p.direction == "left"){
+			if (this.p.sheet ==  "EAttackL__"){
 				this.p.vx = -200;
 
 			}
-			else{
+			else if(this.p.sheet ==  "EAttack__"){
 				this.p.vx = 200;
 			}
 	  		this.p.attacking = false;
