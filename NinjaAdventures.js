@@ -223,7 +223,7 @@ window.addEventListener("load", function() {
 			this._super(p, {
 				sprite: "enemy_anim",
 				sheet: "EIdleL__",
-				vx: 200,
+				vx: -200,
 				x: 2000,
 				y: 1750,
 				attacking: false, 
