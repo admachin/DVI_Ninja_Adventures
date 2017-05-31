@@ -447,9 +447,12 @@ window.addEventListener("load", function() {
 	});
 
 	//Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json, EnemyNinja.png, EnemyNinja.json, acido.png, acido.json, enemy_girl_die.mp3", function() {
-	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, EnemyNinja3.png, EnemyNinja3.json, acido.png, acido.json", function() {
+	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, Ninja1.png, Ninja1.json, Ninja2.png, Ninja2.json, Ninja3.png, Ninja3.json, Ninja4.png, Ninja4.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, EnemyNinja3.png, EnemyNinja3.json, acido.png, acido.json", function() {
 		Q.compileSheets("mario_small.png", "mario_small.json");
-		Q.compileSheets("ninja.png", "ninja.json");
+		Q.compileSheets("Ninja1.png", "Ninja1.json");
+		Q.compileSheets("Ninja2.png", "Ninja2.json");
+		Q.compileSheets("Ninja3.png", "Ninja3.json");
+		Q.compileSheets("Ninja4.png", "Ninja4.json");
 		Q.compileSheets("coin.png", "coin.json");
 		Q.compileSheets("acido.png", "acido.json");
 		Q.compileSheets("EnemyNinja1.png", "EnemyNinja1.json");
