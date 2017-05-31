@@ -447,13 +447,14 @@ window.addEventListener("load", function() {
 	});
 
 	//Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json, EnemyNinja.png, EnemyNinja.json, acido.png, acido.json, enemy_girl_die.mp3", function() {
-	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, acido.png, acido.json", function() {
+	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, EnemyNinja3.png, EnemyNinja3.json, acido.png, acido.json", function() {
 		Q.compileSheets("mario_small.png", "mario_small.json");
 		Q.compileSheets("ninja.png", "ninja.json");
 		Q.compileSheets("coin.png", "coin.json");
 		Q.compileSheets("acido.png", "acido.json");
 		Q.compileSheets("EnemyNinja1.png", "EnemyNinja1.json");
 		Q.compileSheets("EnemyNinja2.png", "EnemyNinja2.json");
+		Q.compileSheets("EnemyNinja3.png", "EnemyNinja3.json");
 		/*Q.load({
 			"enemy_girl_die": "enemy_girl_die.mp3"
 		}),*/
