@@ -1,0 +1,7 @@
+{"Climb_":{"sx":0,"sy":1,"cols":7,"tilew":282,"tileh":464,"frames":10},
+"RunL__":{"sx":0,"sy":930,"cols":5,"tilew":363,"tileh":458,"frames":10},
+"Run__":{"sx":0,"sy":1847,"cols":5,"tilew":363,"tileh":458,"frames":10},
+"SlideL__":{"sx":0,"sy":2764,"cols":5,"tilew":373,"tileh":351,"frames":10},
+"Slide__":{"sx":0,"sy":3467,"cols":5,"tilew":373,"tileh":351,"frames":10},
+"ThrowL__":{"sx":0,"sy":4170,"cols":5,"tilew":377,"tileh":451,"frames":10},
+"Throw__":{"sx":0,"sy":5073,"cols":5,"tilew":377,"tileh":451,"frames":10}}

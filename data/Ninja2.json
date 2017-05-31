@@ -1,0 +1,10 @@
+{"GlideL_":{"sx":0,"sy":1,"cols":4,"tilew":443,"tileh":454,"frames":10},
+"Glide_":{"sx":0,"sy":1364,"cols":4,"tilew":443,"tileh":454,"frames":10},
+"IdleL__":{"sx":0,"sy":2727,"cols":8,"tilew":232,"tileh":439,"frames":10},
+"Idle__":{"sx":0,"sy":3606,"cols":8,"tilew":232,"tileh":439,"frames":10},
+"JumpL__":{"sx":0,"sy":4485,"cols":5,"tilew":362,"tileh":483,"frames":10},
+"Jump_AttackL__":{"sx":0,"sy":5452,"cols":4,"tilew":504,"tileh":522,"frames":10},
+"Jump_Attack__":{"sx":0,"sy":7019,"cols":4,"tilew":504,"tileh":522,"frames":10},
+"Jump_ThrowL__":{"sx":0,"sy":8586,"cols":5,"tilew":360,"tileh":431,"frames":10},
+"Jump_Throw__":{"sx":0,"sy":9449,"cols":5,"tilew":360,"tileh":431,"frames":10},
+"Jump__":{"sx":0,"sy":10312,"cols":5,"tilew":362,"tileh":483,"frames":10}}
