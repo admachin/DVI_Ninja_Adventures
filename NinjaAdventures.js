@@ -74,7 +74,7 @@ window.addEventListener("load", function() {
 	},		
 	step: function(dt) {
 		this.p.reload-=dt;
-		if(this.p.y > 5000) {
+		if(this.p.y > 3500) {
 			this.die();
 		}
 		if(this.p.death == true) {	// Muerto.
@@ -152,7 +152,6 @@ window.addEventListener("load", function() {
 						if(Q.inputs['attack'] || this.p.attacking) {
 							this.p.sheet =  "AttackL__";
 					      	this.play("attack_left");
-					      	this.p.x += 304;
 					      	this.p.attacking = true;
 						}
 						else {
@@ -213,28 +212,28 @@ window.addEventListener("load", function() {
 		die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // DeadL__
 	});
 	
-	/*
+	
 	//Animaciones Enemigo Ninja
 	Q.animations("enemy_anim", {
-		attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EAttack__
-		attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EAttackL__
+		//attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EAttack__
+		//attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EAttackL__
 
 		stand_right: { frames: [0,1,2], rate: 1/5, loop: true }, // EIdle__
 		stand_left: { frames: [0,1,2], rate: 1/5, loop: true }, // EIdleL__
 
-		jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJump__
-		jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJumpL__
+		//jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJump__
+		//jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJumpL__
 		
-		fall_right: { frames: [9], rate: 1/10, loop: false }, // EJump__
-		fall_left: { frames: [9], rate: 1/10, loop: false }, // EJumpL__
+		//fall_right: { frames: [9], rate: 1/10, loop: false }, // EJump__
+		//fall_left: { frames: [9], rate: 1/10, loop: false }, // EJumpL__
 
 		run_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // ERun__
 		run_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // ERunL__
 		
-		die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDead__
-		die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDeadL__
+		//die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDead__
+		//die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDeadL__
 	});
-	*/
+	
 	Q.Sprite.extend("Fan", {
 		init: function(p) {
 			this._super(p, {
@@ -251,6 +250,7 @@ window.addEventListener("load", function() {
 	Q.Sprite.extend("Enemy1", {
 		init: function(p) {
 			this._super(p, {
+				sprite: "enemy_anim",
 				sheet: "EIdleL__",
 				vx: -200,
 				x: 2000,
@@ -263,6 +263,9 @@ window.addEventListener("load", function() {
 			this.on("bump.left, bump.right, bump.bottom", function(collision) {
 				this.kill(collision);
 			});
+		}
+		step: function(dt){
+			
 		}
 	});
 	Q.Sprite.extend("Fin", {
