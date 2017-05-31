@@ -263,10 +263,6 @@ window.addEventListener("load", function() {
 			this.on("bump.left, bump.right, bump.bottom", function(collision) {
 				this.kill(collision);
 			});
-
-			this.on("bump.top", function(collision) {
-				this.die(collision);
-			});
 		}
 	});
 	Q.Sprite.extend("Fin", {
