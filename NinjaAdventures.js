@@ -3,8 +3,8 @@ window.addEventListener("load", function() {
 				.include("Scenes, Sprites, Input, UI, Touch, TMX, 2D, Anim, Audio")
 				.setup({maximize: true})
 				.controls()
-				.touch()
-				.enableSound();
+				.touch();
+				//.enableSound();
 
 
 	Q.component("defaultEnemy", {
@@ -15,6 +15,7 @@ window.addEventListener("load", function() {
 						this.die();
 					}
 					else{
+						this.attack();
 						collision.obj.damage(this.p.attack);
 					}
 				}
@@ -224,11 +225,14 @@ window.addEventListener("load", function() {
 				sheet: "EIdleL__",
 				vx: -200,
 				x: 2000,
-				y: 1750, 
+				y: 1750,
+				attacking: false, 
 				attack: 100
 			});
 
-			this.add('2d, aiBounce, defaultEnemy');
+			this.add('2d, aiBounce, defaultEnemy, animation');
+
+			this.on("EnemyAttacked", this, "finishAttack");
 
 			this.on("bump.left, bump.right, bump.bottom", function(collision) {
 				this.colide(collision);
@@ -236,24 +240,73 @@ window.addEventListener("load", function() {
 		},
 
 		die: function() {
-			Q.audio.play("enemy_girl_die");
+			//Q.audio.play("enemy_girl_die");
 			this.destroy();
+		},
+
+		attack: function(){
+			this.p.attacking = true;
+			
+		},
+
+		finishAttack: function() {
+			if (this.p.direction == "left"){
+				this.p.vx = -200;
+
+			}
+			else{
+				this.p.vx = 200;
+			}
+	  		this.p.attacking = false;
+	  	},
+
+		step: function(dt) {
+
+			if(this.p.vx > 0 && this.p.vy == 0) {					// Moviendo derecha.
+
+				if (this.p.attacking == true){
+					this.p.vx = 0;
+					this.p.sheet =  "EAttackL__";
+	      			this.play("attack_left");
+				}
+				else{
+					this.p.sheet =  "ERun__";
+		      		this.play("run_right");
+	      		}
+					
+		    } 
+		    else if(this.p.vx < 0 && this.p.vy == 0) {					// Moviento izquierda.
+		    	
+		    	if (this.p.attacking == true){
+		    		this.p.vx = 0;
+					this.p.sheet =  "EAttack__";
+	      			this.play("attack_right");
+				}
+				else{
+					this.p.sheet =  "ERunL__";
+		      		this.play("run_left");
+	      		}
+
+		    } 
+
+		    
+
 		}
 	});
 
 	//Animaciones Enemigo Ninja
 	Q.animations("enemy_anim", {
-		//attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EAttack__
-		//attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EAttackL__
+		attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // EAttack__
+		attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // EAttackL__
 
 		stand_right: { frames: [0,1,2], rate: 1/5, loop: true }, // EIdle__
 		stand_left: { frames: [0,1,2], rate: 1/5, loop: true }, // EIdleL__
 
-		//jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJump__
-		//jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJumpL__
+		jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJump__
+		jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJumpL__
 		
-		//fall_right: { frames: [9], rate: 1/10, loop: false }, // EJump__
-		//fall_left: { frames: [9], rate: 1/10, loop: false }, // EJumpL__
+		fall_right: { frames: [9], rate: 1/10, loop: false }, // EJump__
+		fall_left: { frames: [9], rate: 1/10, loop: false }, // EJumpL__
 
 		run_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // ERun__
 		run_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // ERunL__
@@ -393,15 +446,17 @@ window.addEventListener("load", function() {
 		});
 	});
 
-	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json, EnemyNinja.png, EnemyNinja.json, acido.png, acido.json, enemy_girl_die.mp3", function() {
+	//Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json, EnemyNinja.png, EnemyNinja.json, acido.png, acido.json, enemy_girl_die.mp3", function() {
+	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, acido.png, acido.json", function() {
 		Q.compileSheets("mario_small.png", "mario_small.json");
 		Q.compileSheets("ninja.png", "ninja.json");
 		Q.compileSheets("coin.png", "coin.json");
 		Q.compileSheets("acido.png", "acido.json");
-		Q.compileSheets("EnemyNinja.png", "EnemyNinja.json");
-		Q.load({
+		Q.compileSheets("EnemyNinja1.png", "EnemyNinja1.json");
+		Q.compileSheets("EnemyNinja2.png", "EnemyNinja2.json");
+		/*Q.load({
 			"enemy_girl_die": "enemy_girl_die.mp3"
-		}),
+		}),*/
 		Q.stageScene("level1", 0);
 	});
 });
