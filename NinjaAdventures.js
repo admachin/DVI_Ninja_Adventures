@@ -9,21 +9,14 @@ window.addEventListener("load", function() {
 
 	Q.component("defaultEnemy", {
 		extend: {
-			kill: function(collision) {
+			colide: function(collision) {
 				if(collision.obj.isA("Ninja")) {
-					
 					if(collision.obj.p.attacking == true || collision.obj.p.sliding == true){
-						this.destroy();
+						this.die();
 					}
 					else{
 						collision.obj.damage(this.p.attack);
 					}
-				}
-			},
-
-			die: function(collision) {
-				if(collision.obj.isA("Ninja")) {
-					this.destroy();
 				}
 			}
 		}
@@ -31,152 +24,152 @@ window.addEventListener("load", function() {
 
 	Q.Sprite.extend("Ninja",{
 
-	  init: function(p) {
+		init: function(p) {
+			this._super(p, {
+			  x: 350,
+			  y: 1850,
+			  sprite: "ninja_anim",
+			  sheet: "Idle__",
+			  death: false,
+			  attacking: false,
+			  life: 500,
+			  reloadTime: 0.5,
+			  reload: 0.5
+			});
 
-	    this._super(p, {
-	      x: 350,
-		  y: 1850,
-	      sprite: "ninja_anim",
-	      sheet: "Idle__",
-	      death: false,
-	      attacking: false,
-	      life: 500,
-	      reloadTime: 0.5,
-	      reload: 0.5
-	    });
-	    
-	    this.add('2d, platformerControls, animation');
+			this.add('2d, platformerControls, animation');
 
 
-	    this.play("stand_right");
+			this.play("stand_right");
 
-	    this.on("attacked", this, "finishAttack");
-	  },
+			this.on("attacked", this, "finishAttack");
+		},
 
-  	finishAttack: function() {
-  		this.p.attacking = false;
-  	},
+	  	finishAttack: function() {
+	  		this.p.attacking = false;
+	  	},
 
-	die: function(){
-		this.p.death = true;
-	},
-	damage: function(attack){
-		if(this.p.reload < 0){
-			this.p.reload = this.p.reloadTime;
-			this.p.life -= attack;
-			Q.state.inc("life", -attack);
-			//console.log(this.p.life);
-			if(this.p.life <= 0){
+		die: function(){
+			this.p.death = true;
+		},
+
+		damage: function(attack){
+			if(this.p.reload < 0){
+				this.p.reload = this.p.reloadTime;
+				this.p.life -= attack;
+				Q.state.inc("life", -attack);
+				//console.log(this.p.life);
+				if(this.p.life <= 0){
+					this.die();
+				}
+			}
+			
+		},		
+		step: function(dt) {
+			this.p.reload-=dt;
+			if(this.p.y > 3500) {
 				this.die();
 			}
-		}
-		
-	},		
-	step: function(dt) {
-		this.p.reload-=dt;
-		if(this.p.y > 3500) {
-			this.die();
-		}
-		if(this.p.death == true) {	// Muerto.
-			//this.play("die_" + this.p.direction);
-			Q.stage().pause();
-			Q.stageScene("loseGame", 1);
-		}
-		else{						// No muerto.
-			if(Q.inputs['up']) {						// Saltos
-				if(this.p.direction == "right") {
-					this.p.sheet =  "Jump__";
-					this.play("jump_right");
-				}
-				else {
-					this.p.sheet =  "JumpL__";
-					this.play("jump_left");
-				}
+			if(this.p.death == true) {	// Muerto.
+				//this.play("die_" + this.p.direction);
+				Q.stage().pause();
+				Q.stageScene("loseGame", 1);
 			}
-
-			if(this.p.vy > 0) {							// En el aire cayendo.
-				if(this.p.flying) {
-					if(this.p.direction == "right") {
-						this.p.sheet =  "Glide_";
-			      		this.play("glide_right");
-					}
-					else {
-						this.p.sheet =  "GlideL_";
-			      		this.play("glide_left");
-					}
-				}
-				else {
+			else{						// No muerto.
+				if(Q.inputs['up']) {						// Saltos
 					if(this.p.direction == "right") {
 						this.p.sheet =  "Jump__";
-						this.play("fall_right");
+						this.play("jump_right");
 					}
 					else {
 						this.p.sheet =  "JumpL__";
-						this.play("fall_left");
+						this.play("jump_left");
 					}
 				}
-			}
-			else if(this.p.vx > 0 && this.p.vy == 0) {					// Moviendo derecha.
-				if(Q.inputs['attack'] || this.p.attacking) {
-					this.p.sheet =  "Attack__";
-			      	this.play("attack_right");
-			      	this.p.attacking = true;
-				}
-				else if(this.p.sliding) {
-					this.p.sheet =  "Slide__";
-			      	this.play("slide_right");
-				}
-				else{
-					this.p.sheet =  "Run__";
-		      		this.play("run_right");
-				}
-		    } 
-		    else if(this.p.vx < 0 && this.p.vy == 0) {					// Moviento izquierda.
-		    	if(Q.inputs['attack'] || this.p.attacking) {
-					this.p.sheet =  "AttackL__";
-			      	this.play("attack_left");
-			      	this.p.attacking = true;
-				}
-				else if(this.p.sliding) {
-					this.p.sheet =  "SlideL__";
-			      	this.play("slide_left");
-				}
-				else{
-					this.p.sheet =  "RunL__";
-		      		this.play("run_left");
-				}
-		    } 
-		    else {										// Quieto.
-				if(this.p.vy == 0) {
-					if (this.p.direction == "left") {
-						if(Q.inputs['attack'] || this.p.attacking) {
-							this.p.sheet =  "AttackL__";
-					      	this.play("attack_left");
-					      	this.p.attacking = true;
+
+				if(this.p.vy > 0) {							// En el aire cayendo.
+					if(this.p.flying) {
+						if(this.p.direction == "right") {
+							this.p.sheet =  "Glide_";
+				      		this.play("glide_right");
 						}
 						else {
-							this.p.sheet =  "IdleL__";
-							this.play("stand_left");
+							this.p.sheet =  "GlideL_";
+				      		this.play("glide_left");
 						}
 					}
 					else {
-						if(Q.inputs['attack'] || this.p.attacking) {
-							this.p.sheet =  "Attack__";
-					      	this.play("attack_right");
-					      	this.p.attacking = true;
+						if(this.p.direction == "right") {
+							this.p.sheet =  "Jump__";
+							this.play("fall_right");
 						}
 						else {
-							this.p.sheet =  "Idle__";
-							this.play("stand_right");
+							this.p.sheet =  "JumpL__";
+							this.play("fall_left");
 						}
 					}
 				}
-		    }
+				else if(this.p.vx > 0 && this.p.vy == 0) {					// Moviendo derecha.
+					if(Q.inputs['attack'] || this.p.attacking) {
+						this.p.sheet =  "Attack__";
+				      	this.play("attack_right");
+				      	this.p.attacking = true;
+					}
+					else if(this.p.sliding) {
+						this.p.sheet =  "Slide__";
+				      	this.play("slide_right");
+					}
+					else{
+						this.p.sheet =  "Run__";
+			      		this.play("run_right");
+					}
+			    } 
+			    else if(this.p.vx < 0 && this.p.vy == 0) {					// Moviento izquierda.
+			    	if(Q.inputs['attack'] || this.p.attacking) {
+						this.p.sheet =  "AttackL__";
+				      	this.play("attack_left");
+				      	this.p.attacking = true;
+					}
+					else if(this.p.sliding) {
+						this.p.sheet =  "SlideL__";
+				      	this.play("slide_left");
+					}
+					else{
+						this.p.sheet =  "RunL__";
+			      		this.play("run_left");
+					}
+			    } 
+			    else {										// Quieto.
+					if(this.p.vy == 0) {
+						if (this.p.direction == "left") {
+							if(Q.inputs['attack'] || this.p.attacking) {
+								this.p.sheet =  "AttackL__";
+						      	this.play("attack_left");
+						      	this.p.attacking = true;
+							}
+							else {
+								this.p.sheet =  "IdleL__";
+								this.play("stand_left");
+							}
+						}
+						else {
+							if(Q.inputs['attack'] || this.p.attacking) {
+								this.p.sheet =  "Attack__";
+						      	this.play("attack_right");
+						      	this.p.attacking = true;
+							}
+							else {
+								this.p.sheet =  "Idle__";
+								this.play("stand_right");
+							}
+						}
+					}
+		    	}
+			}
+				
 		}
-		
-	}
-
 	});
+
 	//Animaciones Ninja
 	Q.animations("ninja_anim", {
 		attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false, trigger: "attacked" }, // Attack__
@@ -212,7 +205,42 @@ window.addEventListener("load", function() {
 		die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // DeadL__
 	});
 	
-	
+	Q.Sprite.extend("Fan", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "marioR",
+				x: 240,
+				y: 100
+			});
+
+			this.add('2d');
+		}
+	});
+
+	Q.Sprite.extend("EnemyGirl", {
+		init: function(p) {
+			this._super(p, {
+				sprite: "enemy_anim",
+				sheet: "EIdleL__",
+				vx: -200,
+				x: 2000,
+				y: 1750, 
+				attack: 100
+			});
+
+			this.add('2d, aiBounce, defaultEnemy');
+
+			this.on("bump.left, bump.right, bump.bottom", function(collision) {
+				this.colide(collision);
+			});
+		},
+
+		die: function() {
+			Q.audio.play("enemy_girl_die");
+			this.destroy();
+		}
+	});
+
 	//Animaciones Enemigo Ninja
 	Q.animations("enemy_anim", {
 		//attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EAttack__
@@ -230,44 +258,10 @@ window.addEventListener("load", function() {
 		run_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // ERun__
 		run_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // ERunL__
 		
-		//die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDead__
-		//die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDeadL__
-	});
-	
-	Q.Sprite.extend("Fan", {
-		init: function(p) {
-			this._super(p, {
-				sheet: "marioR",
-				x: 240,
-				y: 100
-			});
-
-			this.add('2d');
-		}
+		die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDead__
+		die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDeadL__
 	});
 
-	
-	Q.Sprite.extend("Enemy1", {
-		init: function(p) {
-			this._super(p, {
-				sprite: "enemy_anim",
-				sheet: "EIdleL__",
-				vx: -200,
-				x: 2000,
-				y: 1750, 
-				attack: 100
-			});
-
-			this.add('2d, aiBounce, defaultEnemy');
-
-			this.on("bump.left, bump.right, bump.bottom", function(collision) {
-				this.kill(collision);
-			});
-		}
-		step: function(dt){
-			
-		}
-	});
 	Q.Sprite.extend("Fin", {
 		init: function(p) {
 			this._super(p, {
@@ -311,7 +305,6 @@ window.addEventListener("load", function() {
 	//Animaciones Enemigo Ninja
 	Q.animations("acid_anim", {
 		acido: { frames: [1]}
-		
 	});
 
 	// Escenario nivel 1.
@@ -319,12 +312,12 @@ window.addEventListener("load", function() {
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja());
-		var enemy = stage.insert(new Q.Enemy1());
+		var enemy = stage.insert(new Q.EnemyGirl());
 		stage.insert(new Q.Fin());
 
 		Q.state.reset({life: player.p.life});
 		Q.stageScene("HUD", 1);
-//		stage.add("viewport").follow(player, {x: true, y: false});
+		//stage.add("viewport").follow(player, {x: true, y: false});
 		stage.add("viewport").follow(player);
 		stage.viewport.scale = 1/3;
 	});
@@ -399,12 +392,16 @@ window.addEventListener("load", function() {
 			label.p.label =  coinstr;
 		});
 	});
-	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json, EnemyNinja.png, EnemyNinja.json, acido.png, acido.json", function() {
+
+	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, ninja.png, ninja.json, coin.png, coin.json, EnemyNinja.png, EnemyNinja.json, acido.png, acido.json, enemy_girl_die.mp3", function() {
 		Q.compileSheets("mario_small.png", "mario_small.json");
 		Q.compileSheets("ninja.png", "ninja.json");
 		Q.compileSheets("coin.png", "coin.json");
 		Q.compileSheets("acido.png", "acido.json");
 		Q.compileSheets("EnemyNinja.png", "EnemyNinja.json");
+		Q.load({
+			"enemy_girl_die": "enemy_girl_die.mp3"
+		}),
 		Q.stageScene("level1", 0);
 	});
 });
