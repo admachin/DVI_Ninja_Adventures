@@ -1,6 +1,6 @@
 {"MeleeL_":{"sx":0,"sy":1,"cols":3,"tilew":567,"tileh":556,"frames":8},
 "Melee_":{"sx":0,"sy":1670,"cols":3,"tilew":567,"tileh":556,"frames":8},
-"RunL_":{"sx":0,"sy":3339,"cols":3,"tilew":567,"tileh":556,"frames":8},
-"Run_":{"sx":0,"sy":5008,"cols":3,"tilew":567,"tileh":556,"frames":8},
-"ShootL_":{"sx":0,"sy":6677,"cols":3,"tilew":567,"tileh":556,"frames":4},
-"Shoot_":{"sx":0,"sy":7790,"cols":3,"tilew":567,"tileh":556,"frames":4}}
+"Robot_RunL_":{"sx":0,"sy":3339,"cols":3,"tilew":567,"tileh":556,"frames":8},
+"Robot_Run_":{"sx":0,"sy":5008,"cols":3,"tilew":567,"tileh":556,"frames":8},
+"Robot_ShootL_":{"sx":0,"sy":6677,"cols":3,"tilew":567,"tileh":556,"frames":4},
+"Robot_Shoot_":{"sx":0,"sy":7790,"cols":3,"tilew":567,"tileh":556,"frames":4}}
