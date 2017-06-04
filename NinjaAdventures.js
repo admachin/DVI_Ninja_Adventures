@@ -381,7 +381,7 @@
 		});
 	});
 
-	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, Ninja1.png, Ninja1.json, Ninja2.png, Ninja2.json, Ninja3.png, Ninja3.json, Ninja4.png, Ninja4.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, EnemyNinja3.png, EnemyNinja3.json, acido.png, acido.json, music_main.mp3, sword_attack.mp3", function() {
+	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, Fireball.png, Fireball.json, Robot1.png, Robot1.json, Robot2.png, Robot2.json, Ninja1.png, Ninja1.json, Ninja2.png, Ninja2.json, Ninja3.png, Ninja3.json, Ninja4.png, Ninja4.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, EnemyNinja3.png, EnemyNinja3.json, acido.png, acido.json, music_main.mp3, sword_attack.mp3", function() {
 		Q.compileSheets("mario_small.png", "mario_small.json");
 		Q.compileSheets("Ninja1.png", "Ninja1.json");
 		Q.compileSheets("Ninja2.png", "Ninja2.json");
@@ -392,6 +392,9 @@
 		Q.compileSheets("EnemyNinja1.png", "EnemyNinja1.json");
 		Q.compileSheets("EnemyNinja2.png", "EnemyNinja2.json");
 		Q.compileSheets("EnemyNinja3.png", "EnemyNinja3.json");
+		Q.compileSheets("Fireball.png", "Fireball.json");
+		Q.compileSheets("Robot1.png", "Robot1.json");
+		Q.compileSheets("Robot2.png", "Robot2.json");
 		Q.load({
 			"music_main": "music_main.mp3",
 			"sword_attack": "sword_attack.mp3"
