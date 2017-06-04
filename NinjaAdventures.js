@@ -463,8 +463,8 @@
 				run_right: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: true }, // Robot_Run_
 				run_left: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: true }, // Robot_RunL_
 				
-				attack_shoot_right: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // Shoot_
-				attack_shoot_left: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // ShootL_
+				attack_shoot_right: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // Robot_Shoot_
+				attack_shoot_left: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // Robot_ShootL_
 				
 				stand_right: { frames: [0,1,2], rate: 1/5, loop: true }, // Robot_Idle_
 				stand_left: { frames: [0,1,2], rate: 1/5, loop: true }, // Robot_IdleL_
