@@ -1,6 +1,6 @@
-{"DeadL_":{"sx":0,"sy":1,"cols":3,"tilew":562,"tileh":519,"frames":9},
-"Dead_":{"sx":0,"sy":1559,"cols":3,"tilew":562,"tileh":519,"frames":9},
-"IdleL_":{"sx":0,"sy":3117,"cols":3,"tilew":567,"tileh":556,"frames":3},
-"Idle_":{"sx":0,"sy":3674,"cols":3,"tilew":567,"tileh":556,"frames":3},
-"JumpL_":{"sx":0,"sy":4231,"cols":3,"tilew":567,"tileh":556,"frames":10},
-"Jump_":{"sx":0,"sy":6456,"cols":3,"tilew":567,"tileh":556,"frames":10}}
+{"Robot_DeadL_":{"sx":0,"sy":1,"cols":3,"tilew":562,"tileh":519,"frames":9},
+"Robot_Dead_":{"sx":0,"sy":1559,"cols":3,"tilew":562,"tileh":519,"frames":9},
+"Robot_IdleL_":{"sx":0,"sy":3117,"cols":3,"tilew":567,"tileh":556,"frames":3},
+"Robot_Idle_":{"sx":0,"sy":3674,"cols":3,"tilew":567,"tileh":556,"frames":3},
+"Robot_JumpL_":{"sx":0,"sy":4231,"cols":3,"tilew":567,"tileh":556,"frames":10},
+"Robot_Jump_":{"sx":0,"sy":6456,"cols":3,"tilew":567,"tileh":556,"frames":10}}
