@@ -381,7 +381,7 @@
 		});
 	});
 
-	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, Fireball.png, Fireball.json, Robot1.png, Robot1.json, Robot2.png, Robot2.json, Ninja1.png, Ninja1.json, Ninja2.png, Ninja2.json, Ninja3.png, Ninja3.json, Ninja4.png, Ninja4.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, EnemyNinja3.png, EnemyNinja3.json, acido.png, acido.json, music_main.mp3, sword_attack.mp3", function() {
+	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, Proyectiles.png, Proyectiles.json, Robot1.png, Robot1.json, Robot2.png, Robot2.json, Ninja1.png, Ninja1.json, Ninja2.png, Ninja2.json, Ninja3.png, Ninja3.json, Ninja4.png, Ninja4.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, EnemyNinja3.png, EnemyNinja3.json, acido.png, acido.json, music_main.mp3, sword_attack.mp3", function() {
 		Q.compileSheets("mario_small.png", "mario_small.json");
 		Q.compileSheets("Ninja1.png", "Ninja1.json");
 		Q.compileSheets("Ninja2.png", "Ninja2.json");
@@ -392,7 +392,7 @@
 		Q.compileSheets("EnemyNinja1.png", "EnemyNinja1.json");
 		Q.compileSheets("EnemyNinja2.png", "EnemyNinja2.json");
 		Q.compileSheets("EnemyNinja3.png", "EnemyNinja3.json");
-		Q.compileSheets("Fireball.png", "Fireball.json");
+		Q.compileSheets("Proyectiles.png", "Proyectiles.json");
 		Q.compileSheets("Robot1.png", "Robot1.json");
 		Q.compileSheets("Robot2.png", "Robot2.json");
 		Q.load({
@@ -453,6 +453,43 @@
 				
 				die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDead__
 				die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDeadL__
+			});
+			
+			//Animaciones Enemigo Robot
+			Q.animations("enemy_robot_anim", {
+				attack_melee_right: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // Melee_
+				attack_melee_left: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // MeleeL_
+
+				run_right: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: true }, // Robot_Run_
+				run_left: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: true }, // Robot_RunL_
+				
+				attack_shoot_right: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // Shoot_
+				attack_shoot_left: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // ShootL_
+				
+				stand_right: { frames: [0,1,2], rate: 1/5, loop: true }, // Robot_Idle_
+				stand_left: { frames: [0,1,2], rate: 1/5, loop: true }, // Robot_IdleL_
+
+				jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Robot_Jump_
+				jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Robot_JumpL_
+				
+				fall_right: { frames: [9], rate: 1/10, loop: false }, // Robot_Jump_
+				fall_left: { frames: [9], rate: 1/10, loop: false }, // Robot_JumpL_
+
+				die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Robot_Dead_
+				die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Robot_DeadL_
+			});
+			
+			//Animaciones Proyectiles
+			Q.animations("proyectiles_anim", {
+				
+				Fireball_right: { frames: [0,1,2,3,4], rate: 1/10, loop: true}, // Fireball
+				Fireball_left: { frames: [0,1,2,3,4], rate: 1/10, loop: true}, // LFireball
+
+				Kunai_right: { frames: [0], rate: 1/10, loop: true }, // Kunai
+				Kunai_left: { frames: [1], rate: 1/10, loop: true }, // Kunai
+				
+				Explosion: { frames: [0,1,2,3,4], rate: 1/10, loop: false}, // Explosion
+				
 			});
 
 			// Animaciones acido.
