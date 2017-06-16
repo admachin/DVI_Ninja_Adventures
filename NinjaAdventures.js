@@ -6,7 +6,6 @@
 				.touch()
 				.enableSound();
 
-
 	Q.component("defaultEnemy", {
 		extend: {
 			colide: function(collision) {
@@ -44,6 +43,16 @@
 			this.play("stand_right");
 
 			this.on("attacked", this, "finishAttack");
+
+			this.on("hit", this, "collision");
+		},
+		// Set the collision with the fan to be able to go inside it.
+		collision: function(col) {
+			if(col.obj.isA("Fan")) {
+				this.p.x += col.separate[0];
+				this.p.y += col.separate[1];
+				this.p.vy = -1000;
+			}
 		},
 
 	  	finishAttack: function() {
@@ -174,16 +183,22 @@
 				
 		}
 	});
-	
-	Q.Sprite.extend("Fan", {
+
+	Q.Sprite.extend("FanFoot", {	// Sprite to represent the fan foot.
 		init: function(p) {
 			this._super(p, {
-				sheet: "marioR",
+				sheet: "Tile ",
 				x: 240,
-				y: 100
+				y: 1828
 			});
-
-			this.add('2d');
+		}
+	});
+	
+	Q.Sprite.extend("Fan", {	// Sprite with no sheet to make ninja fly when he goes into it.
+		init: function(p) {
+			this._super(p, {
+				h: 1000		// Fan height.
+			});
 		}
 	});
 
@@ -300,7 +315,11 @@
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja());
-		var enemy = stage.insert(new Q.EnemyGirl());
+		//var enemy = stage.insert(new Q.EnemyGirl());
+
+		var fanFoot = stage.insert(new Q.FanFoot());														// Insert the fan foot.
+		var fan = stage.insert(new Q.Fan({x: fanFoot.p.x, y: fanFoot.p.y - fanFoot.p.h, w:fanFoot.p.w}));	// Insert the fan with the logic in top of the foot and with the same width.
+
 		stage.insert(new Q.Fin());
 
 		Q.state.reset({life: player.p.life});
@@ -381,7 +400,7 @@
 		});
 	});
 
-	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, Proyectiles.png, Proyectiles.json, Robot1.png, Robot1.json, Robot2.png, Robot2.json, Ninja1.png, Ninja1.json, Ninja2.png, Ninja2.json, Ninja3.png, Ninja3.json, Ninja4.png, Ninja4.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, EnemyNinja3.png, EnemyNinja3.json, acido.png, acido.json, music_main.mp3, sword_attack.mp3", function() {
+	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, Proyectiles.png, Proyectiles.json, Robot1.png, Robot1.json, Robot2.png, Robot2.json, Ninja1.png, Ninja1.json, Ninja2.png, Ninja2.json, Ninja3.png, Ninja3.json, Ninja4.png, Ninja4.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, EnemyNinja3.png, EnemyNinja3.json, acido.png, acido.json, music_main.mp3, sword_attack.mp3, escenario2.png, escenario2.json", function() {
 		Q.compileSheets("mario_small.png", "mario_small.json");
 		Q.compileSheets("Ninja1.png", "Ninja1.json");
 		Q.compileSheets("Ninja2.png", "Ninja2.json");
@@ -395,6 +414,7 @@
 		Q.compileSheets("Proyectiles.png", "Proyectiles.json");
 		Q.compileSheets("Robot1.png", "Robot1.json");
 		Q.compileSheets("Robot2.png", "Robot2.json");
+		Q.compileSheets("escenario2.png", "escenario2.json");
 		Q.load({
 			"music_main": "music_main.mp3",
 			"sword_attack": "sword_attack.mp3"
