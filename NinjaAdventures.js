@@ -7,7 +7,7 @@
 				.enableSound();
 
 
-	Q.component("defaultEnemy", {
+	/*Q.component("defaultEnemy", {
 		extend: {
 			colide: function(collision) {
 				if(collision.obj.isA("Ninja")) {
@@ -21,7 +21,60 @@
 				}
 			}
 		}
+	});*/
+
+	//defaultEnemy
+	Q.component("defaultEnemy", {
+		added: function() {
+			this.entity.on("bump.left", this, "Left");
+			this.entity.on("bump.right", this, "Right");
+			this.entity.on("bump.bottom, bump.top", this, "colisiones");
+		},
+
+
+		Left: function(collision) {
+			if(collision.obj.isA("Ninja")) {
+					if(collision.obj.p.attacking == true || collision.obj.p.sliding == true){
+						this.entity.die();
+					}
+					else{
+						 this.entity.attack();
+						 this.entity.p.direction_right = false;
+						collision.obj.damage(this.entity.p.attack);
+					}
+			}
+		
+		},
+
+		Right: function(collision) {
+			if(collision.obj.isA("Ninja")) {
+					if(collision.obj.p.attacking == true || collision.obj.p.sliding == true){
+						this.entity.die();
+					}
+					else{
+						 this.entity.attack();
+						 this.entity.p.direction_right = true;
+						collision.obj.damage(this.entity.p.attack);
+					}
+			}
+		
+		},
+
+		colisiones: function(collision) {
+			if(collision.obj.isA("Ninja")) {
+					if(collision.obj.p.attacking == true || collision.obj.p.sliding == true){
+						this.entity.die();
+					}
+					else{
+						this.entity.attack();
+						collision.obj.damage(this.entity.p.attack);
+					}
+			}
+		
+		}
+
 	});
+
 
 	Q.Sprite.extend("Ninja",{
 
@@ -187,6 +240,8 @@
 		}
 	});
 
+
+	//Enemigo Ninja
 	Q.Sprite.extend("EnemyGirl", {
 		init: function(p) {
 			this._super(p, {
@@ -203,9 +258,9 @@
 
 			this.on("EnemyAttacked", this, "finishAttack");
 
-			this.on("bump.left, bump.right, bump.bottom", function(collision) {
+			/*this.on("bump.left, bump.right, bump.bottom", function(collision) {
 				this.colide(collision);
-			});
+			});*/
 		},
 
 		die: function() {
@@ -254,6 +309,91 @@
 				else{
 					this.p.sheet =  "ERunL__";
 		      		this.play("run_left");
+	      		}
+		    } 
+		}
+	});
+
+
+	//Enemigo Robot
+	Q.Sprite.extend("EnemyRobot", {
+		init: function(p) {
+			this._super(p, {
+				sprite: "enemy_robot_anim",
+				sheet: "Robot_IdleL_",
+				vx: 0,
+				x: 2000,
+				y: 1750,
+				direction_right: false,
+				attacking: false, 
+				attack: 100
+			});
+
+			this.add('2d, aiBounce, defaultEnemy, animation');
+
+			this.on("EnemyAttacked", this, "finishAttack");
+
+			//this.on("EnemyShooted", this, "finishShoot");
+		},
+
+		die: function() {
+			this.destroy();
+		},
+
+		attack: function(){
+			this.p.attacking = true;
+			
+		},
+
+		/*finishShoot: function() {
+			if (this.p.sheet ==  "Robot_Shoot_"){
+				this.p.sheet =  "Robot_Idle_";
+	      		this.play("stand_right");
+
+			}
+			else if(this.p.sheet ==  "Robot_ShootL_"){
+				this.p.sheet =  "Robot_IdleL_";
+	      		this.play("stand_left");
+			}
+	  	},*/
+
+		finishAttack: function() {
+			if (this.p.sheet ==  "EAttackL__"){
+				this.p.vx = -200;
+
+			}
+			else if(this.p.sheet ==  "EAttack__"){
+				this.p.vx = 200;
+			}
+	  		this.p.attacking = false;
+	  	},
+
+		step: function(dt) {
+			if(this.p.direction_right == true) {					// Moviendo derecha.
+
+				if (this.p.attacking == true){
+					this.p.vx = 0;
+					this.p.sheet =  "Melee_";
+	      			this.play("attack_melee_right");
+	      			Q.audio.play("sword_attack");
+				}
+				else{
+					this.p.sheet =  "Robot_Shoot_";
+					this.play("attack_shoot_right");
+	      		}
+					
+		    } 
+		    else if(this.p.direction_right == false) {					// Moviento izquierda.
+		    	
+		    	if (this.p.attacking == true){
+		    		this.p.vx = 0;
+					this.p.sheet =  "MeleeL_";
+	      			this.play("attack_melee_left");
+	      			Q.audio.play("sword_attack");
+				}
+				else{
+					this.p.sheet =  "Robot_ShootL_";
+					this.play("attack_shoot_left");
 	      		}
 		    } 
 		}
@@ -463,11 +603,14 @@
 				run_right: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: true }, // Robot_Run_
 				run_left: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: true }, // Robot_RunL_
 				
-				attack_shoot_right: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // Robot_Shoot_
-				attack_shoot_left: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // Robot_ShootL_
+				/*attack_shoot_right: { frames: [0,1,2,3], rate: 1/2, loop: false, trigger: "EnemyShooted"  }, // Robot_Shoot_
+				attack_shoot_left: { frames: [0,1,2,3], rate: 1/2, loop: false, trigger: "EnemyShooted"  }, // Robot_ShootL_*/
+
+				attack_shoot_right: { frames: [0,1,2,3], rate: 1/2, loop: false}, // Robot_Shoot_
+				attack_shoot_left: { frames: [0,1,2,3], rate: 1/2, loop: false}, // Robot_ShootL_
 				
-				stand_right: { frames: [0,1,2], rate: 1/5, loop: true }, // Robot_Idle_
-				stand_left: { frames: [0,1,2], rate: 1/5, loop: true }, // Robot_IdleL_
+				stand_right: { frames: [0,1,2], rate: 1/2, loop: true }, // Robot_Idle_
+				stand_left: { frames: [0,1,2], rate: 1/2, loop: true }, // Robot_IdleL_
 
 				jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Robot_Jump_
 				jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Robot_JumpL_
