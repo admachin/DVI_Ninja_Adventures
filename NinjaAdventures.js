@@ -1,11 +1,10 @@
 	window.addEventListener("load", function() {
-	var Q = window.Q = Quintus()
+	var Q = window.Q = Quintus({ development: true })
 				.include("Scenes, Sprites, Input, UI, Touch, TMX, 2D, Anim, Audio")
 				.setup({maximize: true})
 				.controls()
 				.touch()
 				.enableSound();
-
 	//defaultEnemy
 	Q.component("defaultEnemy", {
 		added: function() {
@@ -53,11 +52,8 @@
 						collision.obj.damage(this.entity.p.attack);
 					}
 			}
-		
 		}
-
 	});
-
 
 	Q.Sprite.extend("Ninja",{
 
@@ -83,11 +79,21 @@
 
 			this.on("hit", this, "collision");
 		},
-		// Set the collision with the fan to be able to go inside it.
+
 		collision: function(col) {
-			if(col.obj.isA("Wind")) {
+			if(col.obj.isA("Wind")) {	// Set the collision with the wind to be able to go inside it.
+				console.log("colision");
 				this.p.x += col.separate[0];
 				this.p.y += col.separate[1];
+				// Play the flying animation.
+				if(this.p.direction == "right") {
+					this.p.sheet =  "Glide_";
+		      		this.play("glide_right");
+				}
+				else {
+					this.p.sheet =  "GlideL_";
+		      		this.play("glide_left");
+				}
 				this.p.vy = -1000;
 			}
 		},
@@ -247,7 +253,6 @@
 		}
 	});
 
-
 	//Enemigo Ninja
 	Q.Sprite.extend("EnemyGirl", {
 		init: function(p) {
@@ -320,7 +325,6 @@
 		    } 
 		}
 	});
-
 
 	//Enemigo Robot
 	Q.Sprite.extend("EnemyRobot", {
@@ -442,6 +446,44 @@
 		}
 	});
 
+	Q.scene("startMenu", function(stage) {
+		var container = stage.insert(new Q.UI.Container({
+	      fill: "gray",
+	      border: 5,
+	      shadow: 10,
+	      shadowColor: "rgba(0,0,0,0.2)",
+	      y: Q.height/2,
+	      x: Q.width/2, 
+	      w: Q.width/2,
+	      h: Q.height/2
+	    }));
+
+	    stage.insert(new Q.UI.Text({ 
+			label: "Welcome to Ninja Adventures!",
+			size: 30,
+			color: "white",
+			outlineWidth: 25,
+			y: -100
+	    }),container);
+     // font          - font for text [weigth: 400, size: 24px, family: arial
+	    stage.insert(new Q.UI.Button({
+	    	label: "Start new game",
+	    	font: {size: 2},
+	    	/*color: "white",
+	    	outlineWidth: 1,
+	    	y: -20,*/
+	    }, function() {
+	    	this.p.label = "Presed";
+	    }), container);
+
+	    stage.insert(new Q.UI.Text({
+	    	label: "Créditos",
+	    	color: "white",
+	    	outlineWidth: 1,
+	    	y: 30
+	    }), container);
+	});
+
 	// Escenario nivel 1.
 	Q.scene("level1", function(stage) {
 		Q.stageTMX("level.tmx", stage);
@@ -450,10 +492,10 @@
 		//var enemy = stage.insert(new Q.EnemyGirl());
 
 		var fanFootUp = stage.insert(new Q.Fan());														// Insert the fan foot.
-		var fanUp = stage.insert(new Q.Wind({x: fanFootUp.p.x, y: fanFootUp.p.y - 3*fanFootUp.p.h}));		// Insert the fan with the logic in top of the foot and with the same width.
+		var fanUp = stage.insert(new Q.Wind({x: fanFootUp.p.x, y: fanFootUp.p.y - 3.5*fanFootUp.p.h}));		// Insert the fan with the logic in top of the foot and with the same width.
 
 		var fanFootLeft = stage.insert(new Q.Fan({x: fanFootUp.p.x + 1500}));
-		var fanLeft = stage.insert(new Q.Wind({x: fanFootLeft.p.x, y: fanFootLeft.p.y - 3*fanFootLeft.p.h}));
+		var fanLeft = stage.insert(new Q.Wind({x: fanFootLeft.p.x, y: fanFootLeft.p.y - 3.5*fanFootLeft.p.h}));
 
 		stage.insert(new Q.Fin());
 
@@ -665,6 +707,7 @@
 				acido: { frames: [1]}
 			});
 			Q.stageScene("level1", 0);
+			//Q.stageScene("startMenu", 0);
 		});
 	});
 });
