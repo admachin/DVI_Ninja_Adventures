@@ -1,0 +1,4 @@
+{
+	"ninjaR":{"sx":0,"sy":0,"tileW":32,"tileH":32,"frames":10},
+	"ninjaL":{"sx":352,"sy":0,"tileW":32,"tileH":32,"frames":10}
+}

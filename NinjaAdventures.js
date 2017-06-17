@@ -1,7 +1,10 @@
 	window.addEventListener("load", function() {
 	var Q = window.Q = Quintus({ development: true })
 				.include("Scenes, Sprites, Input, UI, Touch, TMX, 2D, Anim, Audio")
-				.setup({maximize: true})
+				.setup({
+					width:  480,
+					height: 480
+				})
 				.controls()
 				.touch()
 				.enableSound();
@@ -62,7 +65,7 @@
 			  x: 350,
 			  y: 1850,
 			  sprite: "ninja_anim",
-			  sheet: "Idle__",
+			  sheet: "ninjaR",
 			  death: false,
 			  attacking: false,
 			  life: 500,
@@ -115,11 +118,24 @@
 				if(this.p.life <= 0){
 					this.die();
 				}
-			}
-			
-		},		
+			}	
+		},	
+
 		step: function(dt) {
-			this.p.reload-=dt;
+			if(this.p.vx == 0 && this.p.vy == 0)
+				this.play("stand_" + this.p.direction);
+			if(this.p.vx != 0 && this.p.vy == 0) 
+				this.play("run_" + this.p.direction);
+			if(this.p.sliding)
+				this.play("slide_" + this.p.direction);
+			if(this.p.flying)
+				this.play("glide_" + this.p.direction);
+			if(Q.inputs['up'])
+				this.play("jump_" + this.p.direction);
+			
+
+			//console.log("x: " + this.p.x + "   -   y: " + this.p.y);
+			/*this.p.reload-=dt;
 			if(this.p.y > 3500) {
 				this.die();
 			}
@@ -128,7 +144,7 @@
 				Q.stage().pause();
 				Q.stageScene("loseGame", 1);
 			}
-			else{						// No muerto.
+			else {						// No muerto.
 				if(Q.inputs['up']) {						// Saltos
 					if(this.p.direction == "right") {
 						this.p.sheet =  "Jump__";
@@ -222,7 +238,7 @@
 						}
 					}
 		    	}
-			}
+			}*/
 				
 		}
 	});
@@ -488,21 +504,20 @@
 	Q.scene("level1", function(stage) {
 		Q.stageTMX("level.tmx", stage);
 
-		var player = stage.insert(new Q.Ninja());
+		var player = stage.insert(new Q.Ninja({x: 0, y: 0}));
 		//var enemy = stage.insert(new Q.EnemyGirl());
 
-		var fanFootUp = stage.insert(new Q.Fan());														// Insert the fan foot.
-		var fanUp = stage.insert(new Q.Wind({x: fanFootUp.p.x, y: fanFootUp.p.y - 3.5*fanFootUp.p.h}));		// Insert the fan with the logic in top of the foot and with the same width.
+		/*var fan2 = stage.insert(new Q.Fan({x: 17294, y: 3108}));
+		var wind2 = stage.insert(new Q.Wind({x: fan2.p.x, y: fan2.p.y - 3.5*fan2.p.h}));
 
-		var fanFootLeft = stage.insert(new Q.Fan({x: fanFootUp.p.x + 1500}));
-		var fanLeft = stage.insert(new Q.Wind({x: fanFootLeft.p.x, y: fanFootLeft.p.y - 3.5*fanFootLeft.p.h}));
+		var fan4 = stage.insert(new Q.Fan({x: 24410, y: 1500}));
+		var wind4 = stage.insert(new Q.Wind({x: fan4.p.x, y: fan4.p.y - 3.5*fan4.p.h}));
 
-		stage.insert(new Q.Fin());
+		stage.insert(new Q.Fin());*/
 
 		Q.state.reset({life: player.p.life});
 		Q.stageScene("HUD", 1);
 		stage.add("viewport").follow(player);
-		stage.viewport.scale = 1/3;
 		Q.audio.play("music_main", {loop: true});
 	});
 
@@ -577,37 +592,37 @@
 		});
 	});
 
-	Q.loadTMX("level.tmx, mario_small.png, mario_small.json, Proyectiles.png, Proyectiles.json, Robot1.png, Robot1.json, Robot2.png, Robot2.json, Ninja1.png, Ninja1.json, Ninja2.png, Ninja2.json, Ninja3.png, Ninja3.json, Ninja4.png, Ninja4.json, coin.png, coin.json, EnemyNinja1.png, EnemyNinja1.json, EnemyNinja2.png, EnemyNinja2.json, EnemyNinja3.png, EnemyNinja3.json, acido.png, acido.json, music_main.mp3, sword_attack.mp3, escenario2.png, escenario2.json, wind.png, wind.json, fan.png, fan.json", function() {
-		Q.compileSheets("mario_small.png", "mario_small.json");
-		Q.compileSheets("Ninja1.png", "Ninja1.json");
-		Q.compileSheets("Ninja2.png", "Ninja2.json");
-		Q.compileSheets("Ninja3.png", "Ninja3.json");
-		Q.compileSheets("Ninja4.png", "Ninja4.json");
-		Q.compileSheets("coin.png", "coin.json");
-		Q.compileSheets("acido.png", "acido.json");
-		Q.compileSheets("EnemyNinja1.png", "EnemyNinja1.json");
-		Q.compileSheets("EnemyNinja2.png", "EnemyNinja2.json");
-		Q.compileSheets("EnemyNinja3.png", "EnemyNinja3.json");
-		Q.compileSheets("Proyectiles.png", "Proyectiles.json");
-		Q.compileSheets("Robot1.png", "Robot1.json");
-		Q.compileSheets("Robot2.png", "Robot2.json");
-		Q.compileSheets("escenario2.png", "escenario2.json");
-		Q.compileSheets("wind.png", "wind.json");
-		Q.compileSheets("fan.png", "fan.json");
+	Q.loadTMX("level.tmx, ninja.png, ninja.json", function() {
+		Q.compileSheets("ninja.png", "ninja.json");
 		Q.load({
 			"music_main": "music_main.mp3",
 			"sword_attack": "sword_attack.mp3"
 		}, function() {
-			Q.animations("wind_anim", {
+			/**Q.animations("wind_anim", {
 				wind_animation: { frames: [0, 1, 2, 3, 4, 5], rate: 1/6, loop: true}	// Wind
 			});
 
 			Q.animations("fan_anim", {
 				fan_animation: {frames: [0, 1, 2, 3], rate: 1/8, loop: true}	// Fan
-			});
+			});*/
 
 			//Animaciones Ninja
 			Q.animations("ninja_anim", {
+				stand_left  : {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/10, loop: true},
+				stand_right : {frames: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19], rate: 1/10, loop: true},
+
+				run_left    : {frames: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29], rate: 1/10, loop: true},
+				run_right   : {frames: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39], rate: 1/10, loop: true},
+
+				slide_left  : {frames: [40, 41, 42, 43, 44, 45, 46, 47, 48, 49], rate: 1/10, loop: false},
+				slide_right : {frames: [50, 51, 52, 53, 54, 55, 56, 57, 58, 59], rate: 1/10, loop: false},
+
+				glide_left  : {frames: [60, 61, 62, 63, 64, 65, 66, 67, 68, 69], rate: 1/10, loop: false},
+				glide_right : {frames: [70, 71, 72, 73, 74, 75, 76, 77, 78, 79], rate: 1/10, loop: false},
+
+				jump_left   : {frames: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89], rate: 1/10, loop: false},
+				jump_right   : {frames: [90, 91, 92, 93, 94, 95, 96, 97, 98, 99], rate: 1/10, loop: false}
+				/*
 				attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false, trigger: "attacked" }, // Attack__
 				attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false, trigger: "attacked" }, // AttackL__
 
@@ -638,74 +653,14 @@
 				throw_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // ThrowL__
 				
 				die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Dead__
-				die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // DeadL__
-			});
-
-			//Animaciones Enemigo Ninja
-			Q.animations("enemy_anim", {
-				attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // EAttack__
-				attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // EAttackL__
-
-				stand_right: { frames: [0,1,2], rate: 1/5, loop: true }, // EIdle__
-				stand_left: { frames: [0,1,2], rate: 1/5, loop: true }, // EIdleL__
-
-				jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJump__
-				jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EJumpL__
-				
-				fall_right: { frames: [9], rate: 1/10, loop: false }, // EJump__
-				fall_left: { frames: [9], rate: 1/10, loop: false }, // EJumpL__
-
-				run_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // ERun__
-				run_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // ERunL__
-				
-				die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDead__
-				die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // EDeadL__
-			});
-			
-			//Animaciones Enemigo Robot
-			Q.animations("enemy_robot_anim", {
-				attack_melee_right: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // Melee_
-				attack_melee_left: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: false, trigger: "EnemyAttacked"  }, // MeleeL_
-
-				run_right: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: true }, // Robot_Run_
-				run_left: { frames: [0,1,2,3,4,5,6,7], rate: 1/10, loop: true }, // Robot_RunL_
-				
-				/*attack_shoot_right: { frames: [0,1,2,3], rate: 1/2, loop: false, trigger: "EnemyShooted"  }, // Robot_Shoot_
-				attack_shoot_left: { frames: [0,1,2,3], rate: 1/2, loop: false, trigger: "EnemyShooted"  }, // Robot_ShootL_*/
-
-				attack_shoot_right: { frames: [0,1,2,3], rate: 1/2, loop: false}, // Robot_Shoot_
-				attack_shoot_left: { frames: [0,1,2,3], rate: 1/2, loop: false}, // Robot_ShootL_
-				
-				stand_right: { frames: [0,1,2], rate: 1/2, loop: true }, // Robot_Idle_
-				stand_left: { frames: [0,1,2], rate: 1/2, loop: true }, // Robot_IdleL_
-
-				jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Robot_Jump_
-				jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Robot_JumpL_
-				
-				fall_right: { frames: [9], rate: 1/10, loop: false }, // Robot_Jump_
-				fall_left: { frames: [9], rate: 1/10, loop: false }, // Robot_JumpL_
-
-				die_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Robot_Dead_
-				die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Robot_DeadL_
-			});
-			
-			//Animaciones Proyectiles
-			Q.animations("proyectiles_anim", {
-				
-				Fireball_right: { frames: [0,1,2,3,4], rate: 1/10, loop: true}, // Fireball
-				Fireball_left: { frames: [0,1,2,3,4], rate: 1/10, loop: true}, // LFireball
-
-				Kunai_right: { frames: [0], rate: 1/10, loop: true }, // Kunai
-				Kunai_left: { frames: [1], rate: 1/10, loop: true }, // Kunai
-				
-				Explosion: { frames: [0,1,2,3,4], rate: 1/10, loop: false}, // Explosion
-				
+				die_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // DeadL__*/
 			});
 
 			// Animaciones acido.
 			Q.animations("acid_anim", {
 				acido: { frames: [1]}
 			});
+
 			Q.stageScene("level1", 0);
 			//Q.stageScene("startMenu", 0);
 		});
