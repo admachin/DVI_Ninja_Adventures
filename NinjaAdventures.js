@@ -65,7 +65,7 @@
 			  x: 350,
 			  y: 1850,
 			  sprite: "ninja_anim",
-			  sheet: "ninjaR",
+			  sheet: "ninjaL",
 			  death: false,
 			  attacking: false,
 			  life: 500,
@@ -89,14 +89,7 @@
 				this.p.x += col.separate[0];
 				this.p.y += col.separate[1];
 				// Play the flying animation.
-				if(this.p.direction == "right") {
-					this.p.sheet =  "Glide_";
-		      		this.play("glide_right");
-				}
-				else {
-					this.p.sheet =  "GlideL_";
-		      		this.play("glide_left");
-				}
+				this.play("glide_" + this.p.direction);
 				this.p.vy = -1000;
 			}
 		},
@@ -132,6 +125,10 @@
 				this.play("glide_" + this.p.direction);
 			if(Q.inputs['up'])
 				this.play("jump_" + this.p.direction);
+			if(Q.inputs['attack']) {
+				this.play("attack_" + this.p.direction);
+		      	Q.audio.play("sword_attack", {debounce: 500});
+		      }
 			
 
 			//console.log("x: " + this.p.x + "   -   y: " + this.p.y);
@@ -504,7 +501,7 @@
 	Q.scene("level1", function(stage) {
 		Q.stageTMX("level.tmx", stage);
 
-		var player = stage.insert(new Q.Ninja({x: 0, y: 0}));
+		var player = stage.insert(new Q.Ninja({x: 10, y: 0}));
 		//var enemy = stage.insert(new Q.EnemyGirl());
 
 		/*var fan2 = stage.insert(new Q.Fan({x: 17294, y: 3108}));
@@ -608,34 +605,29 @@
 
 			//Animaciones Ninja
 			Q.animations("ninja_anim", {
-				stand_left  : {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/10, loop: true},
-				stand_right : {frames: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19], rate: 1/10, loop: true},
+				stand_left   : {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/10, loop: true},
+				stand_right  : {frames: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19], rate: 1/10, loop: true},
 
-				run_left    : {frames: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29], rate: 1/10, loop: true},
-				run_right   : {frames: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39], rate: 1/10, loop: true},
+				run_left     : {frames: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29], rate: 1/10, loop: true},
+				run_right    : {frames: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39], rate: 1/10, loop: true},
 
-				slide_left  : {frames: [40, 41, 42, 43, 44, 45, 46, 47, 48, 49], rate: 1/10, loop: false},
-				slide_right : {frames: [50, 51, 52, 53, 54, 55, 56, 57, 58, 59], rate: 1/10, loop: false},
+				slide_left   : {frames: [40, 41, 42, 43, 44, 45, 46, 47, 48, 49], rate: 1/10, loop: false},
+				slide_right  : {frames: [50, 51, 52, 53, 54, 55, 56, 57, 58, 59], rate: 1/10, loop: false},
 
-				glide_left  : {frames: [60, 61, 62, 63, 64, 65, 66, 67, 68, 69], rate: 1/10, loop: false},
-				glide_right : {frames: [70, 71, 72, 73, 74, 75, 76, 77, 78, 79], rate: 1/10, loop: false},
+				glide_left   : {frames: [60, 61, 62, 63, 64, 65, 66, 67, 68, 69], rate: 1/10, loop: false},
+				glide_right  : {frames: [70, 71, 72, 73, 74, 75, 76, 77, 78, 79], rate: 1/10, loop: false},
 
-				jump_left   : {frames: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89], rate: 1/10, loop: false},
-				jump_right   : {frames: [90, 91, 92, 93, 94, 95, 96, 97, 98, 99], rate: 1/10, loop: false}
+				jump_left    : {frames: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89], rate: 1/10, loop: false},
+				jump_right   : {frames: [90, 91, 92, 93, 94, 95, 96, 97, 98, 99], rate: 1/10, loop: false},
+
+				attack_left  : {frames: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109], rate: 1/10, loop: true},
+				attack_right : {frames: [110, 111, 112, 113, 114, 115, 116, 117, 118, 119], rate: 1/10, loop: true}
 				/*
-				attack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false, trigger: "attacked" }, // Attack__
-				attack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false, trigger: "attacked" }, // AttackL__
 
 				climb: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // Climb_
 
-				glide_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // Glide_
-				glide_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // GlideL_
 
-				stand_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/5, loop: true }, // Idle__
-				stand_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/5, loop: true }, // IdleL__
 
-				jump_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Jump__
-				jump_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // JumpL__
 
 				fall_right: { frames: [9], loop: false }, // Jump__
 				fall_left: { frames: [9], loop: false }, // JumpL__
@@ -643,11 +635,7 @@
 				jumpAttack_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Jump_Attack__
 				jumpAttack_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Jump_AttackL__
 
-				run_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // Run__
-				run_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // RunL__
 
-				slide_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // Slide__
-				slide_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // SlideL__
 
 				throw_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Throw__
 				throw_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // ThrowL__

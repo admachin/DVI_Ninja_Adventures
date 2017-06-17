@@ -1,4 +1,14 @@
 {
-	"ninjaR":{"sx":0,"sy":0,"tileW":32,"tileH":32,"frames":10},
-	"ninjaL":{"sx":352,"sy":0,"tileW":32,"tileH":32,"frames":10}
+	"ninjaL"        : {"sx":0,   "sy":0,   "tileW":32, "tileH":32, "frames":10},
+	"ninjaR"        : {"sx":352, "sy":0,   "tileW":32, "tileH":32, "frames":10},
+	"ninjaRunL"     : {"sx":0,   "sy":32,  "tileW":32, "tileH":32, "frames":10},
+	"ninjaRunR"     : {"sx":352, "sy":32,  "tileW":32, "tileH":32, "frames":10},
+	"ninjaSlideL"   : {"sx":0,   "sy":64,  "tileW":32, "tileH":32, "frames":10},
+	"ninjaSlideR"   : {"sx":352, "sy":64,  "tileW":32, "tileH":32, "frames":10},
+	"ninjaSlideL"   : {"sx":0,   "sy":96,  "tileW":32, "tileH":32, "frames":10},
+	"ninjaSlideR"   : {"sx":352, "sy":96,  "tileW":32, "tileH":32, "frames":10},
+	"ninjaJumpL"    : {"sx":0,   "sy":128, "tileW":32, "tileH":32, "frames":10},
+	"ninjaJumpR"    : {"sx":352, "sy":128, "tileW":32, "tileH":32, "frames":10},
+	"ninjaAttackL"  : {"sx":0,   "sy":160, "tileW":32, "tileH":32, "frames":10},
+	"ninjaAttackR"  : {"sx":352, "sy":160, "tileW":32, "tileH":32, "frames":10}
 }
