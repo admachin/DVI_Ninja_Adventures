@@ -273,11 +273,11 @@
 	Q.Sprite.extend("EnemyRobot", {
 		init: function(p) {
 			this._super(p, {
+				sheet: "enemy_robotL",
 				sprite: "enemy_robot_anim",
-				sheet: "Robot_IdleL_",
 				vx: 0,
-				x: 2000,
-				y: 1750,
+				x: 0,
+				y: 0,
 				direction_right: false,
 				attacking: false, 
 				attack: 100
@@ -522,7 +522,7 @@
 		});
 	});
 
-	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json", function() {
+	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json", function() {
 		Q.compileSheets("ninja.png", "ninja.json");
 		Q.compileSheets("wind.png", "wind.json");
 		Q.compileSheets("fan.png", "fan.json");
@@ -596,6 +596,29 @@
 
 				die_left     : {frames: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89], rate: 1/10, loop: false, trigger: "EnemyDie"},
 				die_right    : {frames: [90, 91, 92, 93, 94, 95, 96, 97, 98, 99], rate: 1/10, loop: false, trigger: "EnemyDie"}
+			});
+
+			Q.animations("enemy_robot_anim", {
+				stand_left : {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/3, loop: true},
+				stand_right  : {frames: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19], rate: 1/3, loop: true},
+
+				run_left     : {frames: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29], rate: 1/10, loop: true},
+				run_right    : {frames: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39], rate: 1/10, loop: true},
+
+				jump_left    : {frames: [40, 41, 42, 43, 44, 45, 46, 47, 48, 49], rate: 1/10, loop: false},
+				jump_right   : {frames: [50, 51, 52, 53, 54, 55, 56, 57, 58, 59], rate: 1/10, loop: false},
+
+				fall_left	 : {frames: [49], loop: false},
+				fall_right   : {frames: [59], loop: false},
+
+				attack_left  : {frames: [60, 61, 62, 63, 64, 65, 66, 67, 68, 69], rate: 1/10, loop: false, trigger: "EnemyAttacked"},
+				attack_right : {frames: [70, 71, 72, 73, 74, 75, 76, 77, 78, 79], rate: 1/10, loop: false, trigger: "EnemyAttacked"},
+
+				die_left     : {frames: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89], rate: 1/10, loop: false, trigger: "EnemyDie"},
+				die_right    : {frames: [90, 91, 92, 93, 94, 95, 96, 97, 98, 99], rate: 1/10, loop: false, trigger: "EnemyDie"},
+
+				missil_left  : {frames: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109], rate: 1/10, loop: false, trigger: "EnemyMissil"},
+				missil_right : {frames: [110, 111, 112, 113, 114, 115, 116, 117, 118, 119], rate: 1/10, loop: false, trigger: "EnemyMissil"},
 			});
 
 			Q.stageScene("level1", 0);

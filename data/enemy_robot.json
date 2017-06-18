@@ -1,0 +1,14 @@
+{
+	"enemy_robotL"       : {"sx":0,   "sy":0,   "tileW":32, "tileH":32, "frames":10},
+	"enemy_robotR"       : {"sx":352, "sy":0,   "tileW":32, "tileH":32, "frames":10},
+	"enemy_robotRunL"    : {"sx":0,   "sy":32,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_robotRunR"    : {"sx":352, "sy":32,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_ninjaJumpL"   : {"sx":0,   "sy":64,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_ninjaJumpR"   : {"sx":352, "sy":64,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_robotAttackL" : {"sx":0,   "sy":96,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_robotAttackR" : {"sx":352, "sy":96,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_robotDieL"    : {"sx":0,   "sy":128, "tileW":32, "tileH":32, "frames":10},
+	"enemy_robotDieR"    : {"sx":352, "sy":128, "tileW":32, "tileH":32, "frames":10},
+	"enemy_robotMissilL" : {"sx":0,   "sy":160, "tileW":32, "tileH":32, "frames":10},
+	"enemy_robotMissilR" : {"sx":352, "sy":160, "tileW":32, "tileH":32, "frames":10}
+}
