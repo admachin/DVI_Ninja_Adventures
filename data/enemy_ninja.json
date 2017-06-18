@@ -1,0 +1,12 @@
+{
+	"enemy_ninjaL"       : {"sx":0,   "sy":0,   "tileW":32, "tileH":32, "frames":10},
+	"enemy_ninjaR"       : {"sx":352, "sy":0,   "tileW":32, "tileH":32, "frames":10},
+	"enemy_ninjaRunL"    : {"sx":0,   "sy":32,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_ninjaRunR"    : {"sx":352, "sy":32,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_ninjaJumpL"   : {"sx":0,   "sy":64,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_ninjaJumpR"   : {"sx":352, "sy":64,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_ninjaAttackL" : {"sx":0,   "sy":96,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_ninjaAttackR" : {"sx":352, "sy":96,  "tileW":32, "tileH":32, "frames":10},
+	"enemy_ninjaDieL"	 : {"sx":0,   "sy":128, "tileW":32, "tileH":32, "frames":10},
+	"enemy_ninjaDieR"	 : {"sx":352, "sy":128, "tileW":32, "tileH":32, "frames":10}
+}
