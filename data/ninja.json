@@ -14,5 +14,7 @@
 	"ninjaDieL"	       : {"sx":0,   "sy":192, "tileW":32, "tileH":32, "frames":10},
 	"ninjaDieR"	       : {"sx":352, "sy":192, "tileW":32, "tileH":32, "frames":10},
 	"ninjaJumpAttackL" : {"sx":0,   "sy":224, "tileW":32, "tileH":32, "frames":10},
-	"ninjaJumpAttackR" : {"sx":352, "sy":224, "tileW":32, "tileH":32, "frames":10}
+	"ninjaJumpAttackR" : {"sx":352, "sy":224, "tileW":32, "tileH":32, "frames":10},
+	"ninjaThrowKunaiL" : {"sx":0,   "sy":256, "tileW":32, "tileH":32, "frames":10},
+	"ninjaThrowKunaiR" : {"sx":352, "sy":256, "tileW":32, "tileH":32, "frames":10}
 }

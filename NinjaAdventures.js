@@ -53,6 +53,10 @@
 				else if(this.entity.p.direction == "left")
 					this.entity.p.x -= col.obj.p.w;
 			}
+			else if(col.obj.isA("NinjaKunai")) {
+				this.entity.damage(col.obj.p.attack);
+				col.obj.destroy();
+			}
 		}
 
 		/*colisiones: function(collision) {
@@ -91,6 +95,16 @@
 			this.on("playerDie", this, "finish");
 
 			this.on("hit", this, "collision");
+
+			this.on("throwKunai", this, "throw");
+		},
+
+		throw: function() {
+			Q.audio.play("kunai_noise");
+			if(this.p.direction == "right")
+				Q.stage().insert(new Q.NinjaKunai({x: this.p.x + this.p.w, y: this.p.y, direction: this.p.direction, vx: 400, init: this.p.x}));
+			else if(this.p.direction == "left")
+				Q.stage().insert(new Q.NinjaKunai({x: this.p.x - this.p.w, y: this.p.y, direction: this.p.direction, vx: -400, init: this.p.x}));
 		},
 
 		collision: function(col) {
@@ -140,6 +154,8 @@
 			else {					// No muerto.
 				if(Q.inputs['up'])							// Saltos.
 					this.play("jump_" + this.p.direction, 1);
+				else if(Q.inputs['action'])
+					this.play("throw_" + this.p.direction, 1);
 				if(this.p.vy != 0) {							// En el aire cayendo.
 					if(this.p.flying)
 						this.play("glide_" + this.p.direction);
@@ -361,7 +377,12 @@
 					if(this.p.shootTime <= 0) {
 						this.p.shootTime = this.p.shootTimeInit;
 						this.vx = 0;
-						this.play("missil_" + this.p.direction, 1);
+						this.play("missile_" + this.p.direction, 1);
+						if(this.p.direction == "left")
+							Q.stage().insert(new Q.RobotMissile({x: this.p.x - this.p.w, y: this.p.y, direction: this.p.direction, vx: -500, init: this.p.x}));
+						else
+							Q.stage().insert(new Q.RobotMissile({x: this.p.x + this.p.w, y: this.p.y, direction: this.p.direction, vx: 500, init: this.p.x}));
+						
 					}
 					else {
 						if(this.p.vx > 0)
@@ -373,6 +394,80 @@
 				}
 			}
 		}
+	});
+
+	Q.Sprite.extend("RobotMissile", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "missileL",
+				sprite: "missile_anim",
+				damage: 200,
+				vx: -500,
+				direction: "left",
+				init: 0,
+				max: 1000
+			});
+
+			this.add("animation");
+
+			this.play("missile_" + this.p.direction);
+
+			this.on("hit", this, "collision");
+
+			this.on("MissileImpact", this, "delete");
+		},
+
+		collision: function(col) {
+			if(col.obj.isA("Ninja"))
+				col.obj.damage(this.p.damage);
+			else
+				this.destroy();
+			Q.audio.play("explosion", {debounce: 500});
+			this.vx = 0;
+			this.p.sheet = "explosion";
+			this.p.sprite = "explosion_anim";
+			this.play("explosion_animation", 1);		
+		},
+
+		delete: function() {
+			this.destroy();
+		},
+
+		step: function(dt) {
+			this.p.x += this.p.vx * dt;
+			if(this.p.x < this.p.init - this.p.max || this.p.x > this.p.init + this.p.max)
+				this.destroy();
+		}
+	});
+
+	Q.Sprite.extend("NinjaKunai", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "kunaiR",
+				sprite: "kunai_anim",
+				attack: 200,
+				vx: -400,
+				direction: "left",
+				init: 0,
+				max: 1000
+			});
+
+			this.add("animation");
+
+			this.play("kunai_" + this.p.direction);
+
+			this.on("hit", this, "collision");
+		},
+
+		collision: function(col) {
+			this.destroy();
+		},
+
+		step: function(dt) {
+			this.p.x += this.p.vx * dt;
+			if(this.p.x < this.p.init - this.p.max || this.p.x > this.p.init + this.p.max)
+				this.destroy();
+		}	
 	});
 
 	Q.Sprite.extend("Fin", {
@@ -569,7 +664,7 @@
 		});
 	});
 
-	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json, food.png, food.json", function() {
+	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json, food.png, food.json, robot_missile.png, robot_missile.png, robot_missile.json, explosion.png, explosion.json, kunai.png, kunai.json", function() {
 		Q.compileSheets("ninja.png", "ninja.json");
 		Q.compileSheets("wind.png", "wind.json");
 		Q.compileSheets("fan.png", "fan.json");
@@ -577,6 +672,9 @@
 		Q.compileSheets("enemy_ninja.png", "enemy_ninja.json");
 		Q.compileSheets("enemy_robot.png", "enemy_robot.json");
 		Q.compileSheets("food.png", "food.json");
+		Q.compileSheets("robot_missile.png", "robot_missile.json");
+		Q.compileSheets("explosion.png", "explosion.json");
+		Q.compileSheets("kunai.png", "kunai.json");
 		Q.load({
 			"music_main"       : "music_main.mp3",
 			"sword_attack"     : "sword_attack.mp3",
@@ -584,7 +682,9 @@
 			"woman_scream"     : "woman_scream.mp3",
 			"robot_noise"      : "robot.mp3",
 			"game_over"	       : "game_over.mp3",
-			"game_over_screen" : "game_over_screen.mp3"
+			"game_over_screen" : "game_over_screen.mp3",
+			"explosion"		   : "explosion.mp3",
+			"kunai_noise"      : "kunai.mp3"
 		}, function() {
 			Q.animations("wind_anim", {
 				wind_animation: { frames: [0, 1, 2, 3, 4, 5], rate: 1/6, loop: true}
@@ -625,11 +725,12 @@
 
 				attack_jump_left  : {frames: [140, 141, 142, 143, 144, 145, 146, 147, 148, 149], rate: 1/10, loop: false},
 				attack_jump_right : {frames: [150, 151, 152, 153, 154, 155, 156, 157, 158, 159], rate: 1/10, loop: false},
+
+				throw_left		  : {frames: [160, 161, 162, 163, 164, 165, 166, 167, 168, 169], rate: 1/10, loop: false, trigger: "throwKunai"},
+				throw_right	      : {frames: [170, 171, 172, 173, 174, 175, 176, 177, 178, 179], rate: 1/10, loop: false, trigger: "throwKunai"}
 				/*
 				climb: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // Climb_
-
-				throw_right: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // Throw__
-				throw_left: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: false }, // ThrowL__*/
+				*/
 			});
 
 			Q.animations("enemy_ninja_anim", {
@@ -653,27 +754,41 @@
 			});
 
 			Q.animations("enemy_robot_anim", {
-				stand_left : {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/3, loop: true},
-				stand_right  : {frames: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19], rate: 1/3, loop: true},
+				stand_left    : {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/3, loop: true},
+				stand_right   : {frames: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19], rate: 1/3, loop: true},
 
-				run_left     : {frames: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29], rate: 1/10, loop: true},
-				run_right    : {frames: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39], rate: 1/10, loop: true},
+				run_left      : {frames: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29], rate: 1/10, loop: true},
+				run_right     : {frames: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39], rate: 1/10, loop: true},
 
-				jump_left    : {frames: [40, 41, 42, 43, 44, 45, 46, 47, 48, 49], rate: 1/10, loop: false},
-				jump_right   : {frames: [50, 51, 52, 53, 54, 55, 56, 57, 58, 59], rate: 1/10, loop: false},
+				jump_left     : {frames: [40, 41, 42, 43, 44, 45, 46, 47, 48, 49], rate: 1/10, loop: false},
+				jump_right    : {frames: [50, 51, 52, 53, 54, 55, 56, 57, 58, 59], rate: 1/10, loop: false},
 
-				fall_left	 : {frames: [49], loop: false},
-				fall_right   : {frames: [59], loop: false},
+				fall_left	  : {frames: [49], loop: false},
+				fall_right    : {frames: [59], loop: false},
 
-				attack_left  : {frames: [60, 61, 62, 63, 64, 65, 66, 67, 68, 69], rate: 1/10, loop: false, trigger: "EnemyAttacked"},
-				attack_right : {frames: [70, 71, 72, 73, 74, 75, 76, 77, 78, 79], rate: 1/10, loop: false, trigger: "EnemyAttacked"},
+				attack_left   : {frames: [60, 61, 62, 63, 64, 65, 66, 67, 68, 69], rate: 1/10, loop: false, trigger: "EnemyAttacked"},
+				attack_right  : {frames: [70, 71, 72, 73, 74, 75, 76, 77, 78, 79], rate: 1/10, loop: false, trigger: "EnemyAttacked"},
 
-				die_left     : {frames: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89], rate: 1/10, loop: false, trigger: "EnemyDie"},
-				die_right    : {frames: [90, 91, 92, 93, 94, 95, 96, 97, 98, 99], rate: 1/10, loop: false, trigger: "EnemyDie"},
+				die_left      : {frames: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89], rate: 1/10, loop: false, trigger: "EnemyDie"},
+				die_right     : {frames: [90, 91, 92, 93, 94, 95, 96, 97, 98, 99], rate: 1/10, loop: false, trigger: "EnemyDie"},
 
-				missil_left  : {frames: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109], rate: 1/10, loop: false, trigger: "EnemyShooted"},
-				missil_right : {frames: [110, 111, 112, 113, 114, 115, 116, 117, 118, 119], rate: 1/10, loop: false, trigger: "EnemyShooted"},
+				missile_left  : {frames: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109], rate: 1/10, loop: false, trigger: "EnemyShooted"},
+				missile_right : {frames: [110, 111, 112, 113, 114, 115, 116, 117, 118, 119], rate: 1/10, loop: false, trigger: "EnemyShooted"},
 			});
+
+			Q.animations("missile_anim", {
+				missile_left  : {frames: [0, 1, 2, 3, 4], rate: 1/5, loop: true},
+				missile_right : {frames: [5, 6, 7, 8, 9], rate: 1/5, loop: true}
+			});
+
+			Q.animations("explosion_anim", {
+				explosion_animation : {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], rate: 1/16, loop: false, trigger: "MissileImpact"}
+			});
+
+			Q.animations("kunai_anim", {
+				kunai_right : {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8], rate: 1/18, loop: true},
+				kunai_left  : {frames: [9, 10, 11, 12, 13, 14, 15, 16, 17], rate: 1/9, loop: true}
+			})
 
 			Q.stageScene("level1", 0);
 			//Q.stageScene("startMenu", 0);
