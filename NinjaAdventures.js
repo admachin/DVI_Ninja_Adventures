@@ -13,7 +13,7 @@
 		added: function() {
 			this.entity.on("bump.left", this, "Left");
 			this.entity.on("bump.right", this, "Right");
-			this.entity.on("bump.bottom, bump.top", this, "colisiones");
+			//this.entity.on("bump.bottom, bump.top", this, "colisiones");
 		},
 
 
@@ -45,7 +45,7 @@
 		
 		},
 
-		colisiones: function(collision) {
+		/*colisiones: function(collision) {
 			if(collision.obj.isA("Ninja")) {
 					if(collision.obj.p.attacking == true || collision.obj.p.sliding == true)
 						this.entity.die();
@@ -54,7 +54,7 @@
 						collision.obj.damage(this.entity.p.attack);
 					}
 			}
-		}
+		}*/
 	});
 
 	Q.Sprite.extend("Ninja",{
@@ -255,14 +255,11 @@
 					Q.audio.play("sword_attack");
 				}
 				else {
-					if(this.p.vx > 0) {
-						this.play("run_right");
+					if(this.p.vx > 0)
 						this.p.direction = "right";
-					}
-					else {
-						this.play("run_left");
+					else
 						this.p.direction = "left";
-					}
+					this.play("run_" + this.p.direction);
 				}
 		      		
 		    }
@@ -275,81 +272,93 @@
 			this._super(p, {
 				sheet: "enemy_robotL",
 				sprite: "enemy_robot_anim",
-				vx: 0,
+				vx: -100,
 				x: 0,
 				y: 0,
-				direction_right: false,
+				direction: "left",
 				attacking: false, 
-				attack: 100
+				attack: 100,
+				life: 300,
+				shootTimeInit: 5,
+				shootTime: 5,
+				reloadTime: 0.5,
+				reload: 0.5
 			});
 
 			this.add('2d, aiBounce, defaultEnemy, animation');
 
 			this.on("EnemyAttacked", this, "finishAttack");
 
-			//this.on("EnemyShooted", this, "finishShoot");
+			this.on("EnemyShooted", this, "finishShoot");
+
+			this.on("EnemyDie", this, "delete");
+		},
+
+		damage: function(attack) {
+			console.log(this.p.life);
+			if(this.p.reload < 0) {
+				this.p.reload = this.p.reloadTime;
+				this.p.life -= attack;
+				if(this.p.life <= 0)
+					this.die();
+			}	
 		},
 
 		die: function() {
+			this.play("die_" + this.p.direction, 1);
+		},
+
+		delete: function() {
 			this.destroy();
 		},
 
-		attack: function(){
+		attack: function() {
 			this.p.attacking = true;
 			
 		},
 
-		/*finishShoot: function() {
-			if (this.p.sheet ==  "Robot_Shoot_"){
-				this.p.sheet =  "Robot_Idle_";
-	      		this.play("stand_right");
-
-			}
-			else if(this.p.sheet ==  "Robot_ShootL_"){
-				this.p.sheet =  "Robot_IdleL_";
-	      		this.play("stand_left");
-			}
-	  	},*/
+		finishShoot: function() {
+			if(this.p.direction == "left")
+				this.p.vx = -100;
+			else if(this.p.direction == "right")
+				this.p.vx = 100;
+			this.play("run_" + this.p.direction);
+	  	},
 
 		finishAttack: function() {
-			if (this.p.sheet ==  "EAttackL__"){
-				this.p.vx = -200;
-
-			}
-			else if(this.p.sheet ==  "EAttack__"){
-				this.p.vx = 200;
-			}
+			if(this.p.direction == "left")
+				this.p.vx = -100;
+			else if(this.p.direction == "right")
+				this.p.vx = 100;
 	  		this.p.attacking = false;
 	  	},
 
 		step: function(dt) {
-			if(this.p.direction_right == true) {					// Moviendo derecha.
-
-				if (this.p.attacking == true){
+			this.p.reload -= dt;
+			this.p.shootTime -= dt;
+			if(this.p.y > 3500)
+				this.die();
+			if(this.p.vy == 0) {
+				if(this.p.attacking == true) {
 					this.p.vx = 0;
-					this.p.sheet =  "Melee_";
-	      			this.play("attack_melee_right");
-	      			Q.audio.play("sword_attack");
+					this.play("attack_" + this.p.direction);
+					Q.audio.play("sword_attack");
 				}
-				else{
-					this.p.sheet =  "Robot_Shoot_";
-					this.play("attack_shoot_right");
-	      		}
-					
-		    } 
-		    else if(this.p.direction_right == false) {					// Moviento izquierda.
-		    	
-		    	if (this.p.attacking == true){
-		    		this.p.vx = 0;
-					this.p.sheet =  "MeleeL_";
-	      			this.play("attack_melee_left");
-	      			Q.audio.play("sword_attack");
+				else {
+					if(this.p.shootTime <= 0) {
+						this.p.shootTime = this.p.shootTimeInit;
+						this.vx = 0;
+						this.play("missil_" + this.p.direction, 1);
+					}
+					else {
+						if(this.p.vx > 0)
+							this.p.direction = "right";
+						else
+							this.p.direction = "left";
+						this.play("run_" + this.p.direction);
+					}
 				}
-				else{
-					this.p.sheet =  "Robot_ShootL_";
-					this.play("attack_shoot_left");
-	      		}
-		    } 
+			}
 		}
 	});
 
@@ -437,6 +446,7 @@
 
 		var player = stage.insert(new Q.Ninja({x: 100, y: 500}));
 		var enemy = stage.insert(new Q.EnemyNinja({x: 310, y: 500}));
+		var robot = stage.insert(new Q.EnemyRobot({x: 310, y: 500}));
 
 		/*var fan = stage.insert(new Q.Fan({x: 210, y: 536}));
 		var wind = stage.insert(new Q.Wind({x: fan.p.x, y: fan.p.y - 3.5*fan.p.h}));
@@ -528,6 +538,7 @@
 		Q.compileSheets("fan.png", "fan.json");
 		Q.compileSheets("acid.png", "acid.json");
 		Q.compileSheets("enemy_ninja.png", "enemy_ninja.json");
+		Q.compileSheets("enemy_robot.png", "enemy_robot.json");
 		Q.load({
 			"music_main": "music_main.mp3",
 			"sword_attack": "sword_attack.mp3"
@@ -617,8 +628,8 @@
 				die_left     : {frames: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89], rate: 1/10, loop: false, trigger: "EnemyDie"},
 				die_right    : {frames: [90, 91, 92, 93, 94, 95, 96, 97, 98, 99], rate: 1/10, loop: false, trigger: "EnemyDie"},
 
-				missil_left  : {frames: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109], rate: 1/10, loop: false, trigger: "EnemyMissil"},
-				missil_right : {frames: [110, 111, 112, 113, 114, 115, 116, 117, 118, 119], rate: 1/10, loop: false, trigger: "EnemyMissil"},
+				missil_left  : {frames: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109], rate: 1/10, loop: false, trigger: "EnemyShooted"},
+				missil_right : {frames: [110, 111, 112, 113, 114, 115, 116, 117, 118, 119], rate: 1/10, loop: false, trigger: "EnemyShooted"},
 			});
 
 			Q.stageScene("level1", 0);
