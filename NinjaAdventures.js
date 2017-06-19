@@ -531,6 +531,10 @@
 		}
 	});
 
+	Q.Sprite.extend("Coin", {
+		// Hacer sensor con el sprite y que añada al state la puncuación.
+	});
+
 	Q.scene("startMenu", function(stage) {
 		var container = stage.insert(new Q.UI.Container({
 	      fill: "gray",
@@ -664,7 +668,7 @@
 		});
 	});
 
-	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json, food.png, food.json, robot_missile.png, robot_missile.png, robot_missile.json, explosion.png, explosion.json, kunai.png, kunai.json", function() {
+	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json, food.png, food.json, robot_missile.png, robot_missile.png, robot_missile.json, explosion.png, explosion.json, kunai.png, kunai.json, coin.png, coin.json", function() {
 		Q.compileSheets("ninja.png", "ninja.json");
 		Q.compileSheets("wind.png", "wind.json");
 		Q.compileSheets("fan.png", "fan.json");
@@ -675,6 +679,7 @@
 		Q.compileSheets("robot_missile.png", "robot_missile.json");
 		Q.compileSheets("explosion.png", "explosion.json");
 		Q.compileSheets("kunai.png", "kunai.json");
+		Q.compileSheets("coin.png", "coin.json");
 		Q.load({
 			"music_main"       : "music_main.mp3",
 			"sword_attack"     : "sword_attack.mp3",
@@ -788,7 +793,11 @@
 			Q.animations("kunai_anim", {
 				kunai_right : {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8], rate: 1/18, loop: true},
 				kunai_left  : {frames: [9, 10, 11, 12, 13, 14, 15, 16, 17], rate: 1/9, loop: true}
-			})
+			});
+
+			Q.animations("coin_anim", {
+				coin : {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/7, loop: true}
+			});
 
 			Q.stageScene("level1", 0);
 			//Q.stageScene("startMenu", 0);
