@@ -2,8 +2,8 @@
 	var Q = window.Q = Quintus({ development: true })
 				.include("Scenes, Sprites, Input, UI, Touch, TMX, 2D, Anim, Audio")
 				.setup({
-					width:  480,
-					height: 480
+					width:  1000,
+					height: 1000
 				})
 				.controls()
 				.touch()
@@ -11,13 +11,14 @@
 	//defaultEnemy
 	Q.component("defaultEnemy", {
 		added: function() {
-			this.entity.on("bump.left", this, "Left");
-			this.entity.on("bump.right", this, "Right");
+			this.entity.on("bump.left", this, "left");
+			this.entity.on("bump.right", this, "right");
+			this.entity.on("hit", this, "collision");
 			//this.entity.on("bump.bottom, bump.top", this, "colisiones");
 		},
 
 
-		Left: function(collision) {
+		left: function(collision) {
 			if(collision.obj.isA("Ninja")) {
 				this.entity.p.direction = "left";
 				if(collision.obj.p.attacking == true || collision.obj.p.sliding == true)
@@ -31,7 +32,7 @@
 		
 		},
 
-		Right: function(collision) {
+		right: function(collision) {
 			this.entity.p.direction = "right";
 			if(collision.obj.isA("Ninja")) {
 				if(collision.obj.p.attacking == true || collision.obj.p.sliding == true)
@@ -44,6 +45,15 @@
 			}
 		
 		},
+
+		collision: function(col) {
+			if(col.obj.isA("Food")) {	// To avoid enemies to move the food.
+				if(this.entity.p.direction == "right")
+					this.entity.p.x += col.obj.p.w;
+				else if(this.entity.p.direction == "left")
+					this.entity.p.x -= col.obj.p.w;
+			}
+		}
 
 		/*colisiones: function(collision) {
 			if(collision.obj.isA("Ninja")) {
@@ -103,6 +113,9 @@
 		},
 
 		finish: function() {
+			Q.audio.stop("music_main");
+			Q.audio.play("game_over", {debounce: 500});
+			Q.audio.play("game_over_screen", {loop: true});
 			Q.stage().pause();
 			Q.stageScene("loseGame", 1);
 		},
@@ -160,7 +173,7 @@
 		}
 	});
 
-	Q.Sprite.extend("Fan", {	// Sprite to represent the fan foot.
+	Q.Sprite.extend("Fan", {	// Sprite to represent the fan itself.
 		init: function(p) {
 			this._super(p, {
 				sheet: "fan",
@@ -220,6 +233,7 @@
 		},
 
 		die: function() {
+			Q.audio.play("woman_scream", {debounce: 500});
 			this.play("die_" + this.p.direction, 1);
 		},
 
@@ -252,7 +266,7 @@
 				if (this.p.attacking == true) {
 					this.p.vx = 0;
 					this.play("attack_" + this.p.direction);
-					Q.audio.play("sword_attack");
+					Q.audio.play("sword_attack", {debounce: 500});
 				}
 				else {
 					if(this.p.vx > 0)
@@ -295,7 +309,6 @@
 		},
 
 		damage: function(attack) {
-			console.log(this.p.life);
 			if(this.p.reload < 0) {
 				this.p.reload = this.p.reloadTime;
 				this.p.life -= attack;
@@ -305,6 +318,7 @@
 		},
 
 		die: function() {
+			Q.audio.play("robot_noise", {debounce: 500});
 			this.play("die_" + this.p.direction, 1);
 		},
 
@@ -314,7 +328,6 @@
 
 		attack: function() {
 			this.p.attacking = true;
-			
 		},
 
 		finishShoot: function() {
@@ -342,7 +355,7 @@
 				if(this.p.attacking == true) {
 					this.p.vx = 0;
 					this.play("attack_" + this.p.direction);
-					Q.audio.play("sword_attack");
+					Q.audio.play("sword_attack", {debounce: 500});
 				}
 				else {
 					if(this.p.shootTime <= 0) {
@@ -402,6 +415,27 @@
 		}
 	});
 
+	Q.Sprite.extend("Food", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "chicken",
+				healPower: 300,
+				sensor: true
+			});
+			this.add("2d");
+			this.on("hit", this, "heal");
+		},
+
+		heal: function(col) {
+			if(col.obj.isA("Ninja")) {
+				Q.state.inc("life", this.p.healPower);
+				col.obj.p.life += this.p.healPower;
+				Q.audio.play("food_eat");
+				this.destroy();
+			}
+		}
+	});
+
 	Q.scene("startMenu", function(stage) {
 		var container = stage.insert(new Q.UI.Container({
 	      fill: "gray",
@@ -442,11 +476,13 @@
 
 	// Escenario nivel 1.
 	Q.scene("level1", function(stage) {
+		Q.audio.stop();
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja({x: 100, y: 500}));
 		var enemy = stage.insert(new Q.EnemyNinja({x: 310, y: 500}));
 		var robot = stage.insert(new Q.EnemyRobot({x: 310, y: 500}));
+		var food = stage.insert(new Q.Food({x: 400, y: 500}));	
 
 		/*var fan = stage.insert(new Q.Fan({x: 210, y: 536}));
 		var wind = stage.insert(new Q.Wind({x: fan.p.x, y: fan.p.y - 3.5*fan.p.h}));
@@ -458,6 +494,7 @@
 		Q.state.reset({life: player.p.life});
 		Q.stageScene("HUD", 1);
 		stage.add("viewport").follow(player);
+		stage.viewport.scale = 1.5;
 		Q.audio.play("music_main", {loop: true});
 	});
 
@@ -532,16 +569,22 @@
 		});
 	});
 
-	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json", function() {
+	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json, food.png, food.json", function() {
 		Q.compileSheets("ninja.png", "ninja.json");
 		Q.compileSheets("wind.png", "wind.json");
 		Q.compileSheets("fan.png", "fan.json");
 		Q.compileSheets("acid.png", "acid.json");
 		Q.compileSheets("enemy_ninja.png", "enemy_ninja.json");
 		Q.compileSheets("enemy_robot.png", "enemy_robot.json");
+		Q.compileSheets("food.png", "food.json");
 		Q.load({
-			"music_main": "music_main.mp3",
-			"sword_attack": "sword_attack.mp3"
+			"music_main"       : "music_main.mp3",
+			"sword_attack"     : "sword_attack.mp3",
+			"food_eat"         : "eat.mp3",
+			"woman_scream"     : "woman_scream.mp3",
+			"robot_noise"      : "robot.mp3",
+			"game_over"	       : "game_over.mp3",
+			"game_over_screen" : "game_over_screen.mp3"
 		}, function() {
 			Q.animations("wind_anim", {
 				wind_animation: { frames: [0, 1, 2, 3, 4, 5], rate: 1/6, loop: true}
