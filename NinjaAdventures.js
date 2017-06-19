@@ -13,62 +13,63 @@
 		added: function() {
 			this.entity.on("bump.left", this, "left");
 			this.entity.on("bump.right", this, "right");
-			this.entity.on("hit", this, "collision");
+			//this.entity.on("hit", this, "collision");
 			//this.entity.on("bump.bottom, bump.top", this, "colisiones");
 		},
 
 
 		left: function(collision) {
-			if(collision.obj.isA("Ninja")) {
+			if(collision.obj.isA("Food") || collision.obj.isA("Coin"))	// To avoid enemies to move the food.
+				this.entity.p.x -= (collision.obj.p.w + this.entity.p.w);
+			else if(collision.obj.isA("Ninja")) {
 				this.entity.p.direction = "left";
 				if(collision.obj.p.attacking == true || collision.obj.p.sliding == true)
 					this.entity.damage(collision.obj.p.attack);
 				else {
 					this.entity.attack();
-					this.entity.p.direction_right = false;
 					collision.obj.damage(this.entity.p.attack);
 				}
+			}
+			else if(collision.obj.isA("NinjaKunai")) {
+				this.entity.damage(collision.obj.p.attack);
+				collision.obj.destroy();
 			}
 		
 		},
 
 		right: function(collision) {
-			this.entity.p.direction = "right";
-			if(collision.obj.isA("Ninja")) {
+			console.log(collision.obj.p.w);
+			console.log(this.entity.p.w);
+			if(collision.obj.isA("Food") || collision.obj.isA("Coin"))	// To avoid enemies to move the food.
+				this.entity.p.x += collision.obj.p.w + this.entity.p.w;
+			else if(collision.obj.isA("Ninja")) {
+				this.entity.p.direction = "right";
 				if(collision.obj.p.attacking == true || collision.obj.p.sliding == true)
 					this.entity.damage(collision.obj.p.attack);
 				else {
 					this.entity.attack();
-					this.entity.p.direction_right = true;
 					collision.obj.damage(this.entity.p.attack);
 				}
+			}
+			else if(collision.obj.isA("NinjaKunai")) {
+				this.entity.damage(collision.obj.p.attack);
+				collision.obj.destroy();
 			}
 		
 		},
 
 		collision: function(col) {
-			if(col.obj.isA("Food")) {	// To avoid enemies to move the food.
+			if(col.obj.isA("Food") || col.obj.isA("Coin")) {	// To avoid enemies to move the food.
 				if(this.entity.p.direction == "right")
-					this.entity.p.x += col.obj.p.w;
+					this.entity.p.x += (col.obj.p.w + this.entity.p.w);
 				else if(this.entity.p.direction == "left")
-					this.entity.p.x -= col.obj.p.w;
+					this.entity.p.x -= (col.obj.p.w + this.entity.p.w);
 			}
 			else if(col.obj.isA("NinjaKunai")) {
 				this.entity.damage(col.obj.p.attack);
 				col.obj.destroy();
 			}
 		}
-
-		/*colisiones: function(collision) {
-			if(collision.obj.isA("Ninja")) {
-					if(collision.obj.p.attacking == true || collision.obj.p.sliding == true)
-						this.entity.die();
-					else {
-						this.entity.attack();
-						collision.obj.damage(this.entity.p.attack);
-					}
-			}
-		}*/
 	});
 
 	Q.Sprite.extend("Ninja",{
@@ -235,6 +236,7 @@
 			this.add('2d, aiBounce, defaultEnemy, animation');
 
 			this.on("EnemyAttacked", this, "finishAttack");
+
 			this.on("EnemyDie", this, "delete");
 		},
 
@@ -287,7 +289,7 @@
 				else {
 					if(this.p.vx > 0)
 						this.p.direction = "right";
-					else
+					else if(this.p.vx < 0)
 						this.p.direction = "left";
 					this.play("run_" + this.p.direction);
 				}
@@ -514,8 +516,7 @@
 		init: function(p) {
 			this._super(p, {
 				sheet: "chicken",
-				healPower: 300,
-				sensor: true
+				healPower: 300
 			});
 			this.add("2d");
 			this.on("hit", this, "heal");
@@ -532,6 +533,26 @@
 	});
 
 	Q.Sprite.extend("Coin", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "coin",
+				sprite: "coin_anim"
+			});
+			this.add("animation, 2d");
+
+			this.on("hit", this, "catch");
+
+			this.play("coin_animation");
+		},
+
+		catch: function(col) {
+			if(col.obj.isA("Ninja")) {
+				Q.audio.play("coin_catched");
+				Q.state.inc("coin", 1);
+				this.destroy();
+			}
+		}
+
 		// Hacer sensor con el sprite y que añada al state la puncuación.
 	});
 
@@ -579,9 +600,10 @@
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja({x: 100, y: 500}));
-		var enemy = stage.insert(new Q.EnemyNinja({x: 310, y: 500}));
-		var robot = stage.insert(new Q.EnemyRobot({x: 310, y: 500}));
-		var food = stage.insert(new Q.Food({x: 400, y: 500}));	
+		/*var enemy = stage.insert(new Q.EnemyNinja({x: 310, y: 500}));
+		var robot = stage.insert(new Q.EnemyRobot({x: 310, y: 500}));*/
+		var food = stage.insert(new Q.Food({x: 400, y: 500}));
+		var coin = stage.insert(new Q.Coin({x:800, y:500}));
 
 		/*var fan = stage.insert(new Q.Fan({x: 210, y: 536}));
 		var wind = stage.insert(new Q.Wind({x: fan.p.x, y: fan.p.y - 3.5*fan.p.h}));
@@ -590,7 +612,7 @@
 
 		stage.insert(new Q.Fin());*/
 
-		Q.state.reset({life: player.p.life});
+		Q.state.reset({life: player.p.life, coin: 0});
 		Q.stageScene("HUD", 1);
 		stage.add("viewport").follow(player);
 		stage.viewport.scale = 1.5;
@@ -655,20 +677,46 @@
 
 	// Escenario para el HUD.
 	Q.scene("HUD", function(stage) {
-		var label = stage.insert(new Q.UI.Text({
-			x: 100,
-			y: 35,
-			label: "Vida: 500",
-			color: "yellow"
+		var life_icon = stage.insert(new Q.UI.Button({
+			x:30,
+			y:35,
+			asset: 'heart_HUD.png'
+		}));
+		var life = stage.insert(new Q.UI.Text({
+			x: 80,
+			y: 10,
+			size: 30,
+			outlineWidth: 1,
+			label: "500",
+			color: "red"
 		}));
 		
 		Q.state.on("change.life", this, function() {
-			var coinstr = "Vida: " + Q.state.p.life;
-			label.p.label =  coinstr;
+			var coinstr = "" + Q.state.p.life;
+			life.p.label = coinstr;
+		});
+
+		var coin_icon = stage.insert(new Q.UI.Button({
+			x:30,
+			y:80,
+			asset: 'coin_HUD.png'
+		}));
+		var coin = stage.insert(new Q.UI.Text({
+			x: 80,
+			y: 55,
+			size: 30,
+			outlineWidth: 1,
+			label: "0",
+			color: "yellow"
+		}));
+		
+		Q.state.on("change.coin", this, function() {
+			var coinstr = "" + Q.state.p.coin;
+			coin.p.label = coinstr;
 		});
 	});
 
-	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json, food.png, food.json, robot_missile.png, robot_missile.png, robot_missile.json, explosion.png, explosion.json, kunai.png, kunai.json, coin.png, coin.json", function() {
+	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json, food.png, food.json, robot_missile.png, robot_missile.png, robot_missile.json, explosion.png, explosion.json, kunai.png, kunai.json, coin.png, coin.json, coin_HUD.png, heart_HUD.png", function() {
 		Q.compileSheets("ninja.png", "ninja.json");
 		Q.compileSheets("wind.png", "wind.json");
 		Q.compileSheets("fan.png", "fan.json");
@@ -689,7 +737,8 @@
 			"game_over"	       : "game_over.mp3",
 			"game_over_screen" : "game_over_screen.mp3",
 			"explosion"		   : "explosion.mp3",
-			"kunai_noise"      : "kunai.mp3"
+			"kunai_noise"      : "kunai.mp3",
+			"coin_catched"	   : "coin_catched.mp3"
 		}, function() {
 			Q.animations("wind_anim", {
 				wind_animation: { frames: [0, 1, 2, 3, 4, 5], rate: 1/6, loop: true}
@@ -796,7 +845,7 @@
 			});
 
 			Q.animations("coin_anim", {
-				coin : {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/7, loop: true}
+				coin_animation : {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/7, loop: true}
 			});
 
 			Q.stageScene("level1", 0);
