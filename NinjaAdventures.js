@@ -470,21 +470,22 @@
 		}	
 	});
 
-	Q.Sprite.extend("Fin", {
+	Q.Sprite.extend("Master", {
 		init: function(p) {
 			this._super(p, {
-				asset: "coin",				
-				sheet: "coin",
-				x: 25200,
-				y: 548,
+				sheet: "masterL",
 				sensor: true
 			});
+
+			this.add("2d, tween");
 			
 			this.on("sensor");
 		},
 
 		sensor: function() {
-			Q.stageScene("winGame", 1);		
+			Q.audio.stop();
+			Q.audio.play("win_game");
+			Q.stageScene("winGame", 1);
 			Q.stage().pause();
 		}
 	});
@@ -597,7 +598,7 @@
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja({x: 100, y: 500}));
-		var enemy = stage.insert(new Q.EnemyNinja({x: 1000, y: 500}));
+		/*var enemy = stage.insert(new Q.EnemyNinja({x: 1000, y: 500}));
 		var robot = stage.insert(new Q.EnemyRobot({x: 1200, y: 500}));
 		var food = stage.insert(new Q.Food({x: 200, y: 500}));
 		var coin = stage.insert(new Q.Coin({x:300, y:500}));
@@ -605,9 +606,9 @@
 		var fan = stage.insert(new Q.Fan({x: 210, y: 536}));
 		var wind = stage.insert(new Q.Wind({x: fan.p.x, y: fan.p.y - 3.5*fan.p.h}));
 
-		var acid = stage.insert(new Q.Acid({x: 2000, y: 500}));
+		var acid = stage.insert(new Q.Acid({x: 2000, y: 500}));*/
 
-		stage.insert(new Q.Fin());
+		var master = stage.insert(new Q.Master({x: 500, y: 500}));
 
 		Q.state.reset({life: player.p.life, coin: 0});
 		Q.stageScene("HUD", 1);
@@ -713,7 +714,7 @@
 		});
 	});
 
-	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json, food.png, food.json, robot_missile.png, robot_missile.png, robot_missile.json, explosion.png, explosion.json, kunai.png, kunai.json, coin.png, coin.json, coin_HUD.png, heart_HUD.png", function() {
+	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json, food.png, food.json, robot_missile.png, robot_missile.png, robot_missile.json, explosion.png, explosion.json, kunai.png, kunai.json, coin.png, coin.json, coin_HUD.png, heart_HUD.png, master.png, master.json", function() {
 		Q.compileSheets("ninja.png", "ninja.json");
 		Q.compileSheets("wind.png", "wind.json");
 		Q.compileSheets("fan.png", "fan.json");
@@ -725,6 +726,7 @@
 		Q.compileSheets("explosion.png", "explosion.json");
 		Q.compileSheets("kunai.png", "kunai.json");
 		Q.compileSheets("coin.png", "coin.json");
+		Q.compileSheets("master.png", "master.json");
 		Q.load({
 			"music_main"       : "music_main.mp3",
 			"sword_attack"     : "sword_attack.mp3",
@@ -735,7 +737,8 @@
 			"game_over_screen" : "game_over_screen.mp3",
 			"explosion"		   : "explosion.mp3",
 			"kunai_noise"      : "kunai.mp3",
-			"coin_catched"	   : "coin_catched.mp3"
+			"coin_catched"	   : "coin_catched.mp3",
+			"win_game"		   : "win.mp3"
 		}, function() {
 			Q.animations("wind_anim", {
 				wind_animation: { frames: [0, 1, 2, 3, 4, 5], rate: 1/6, loop: true}
