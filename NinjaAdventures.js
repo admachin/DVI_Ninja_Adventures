@@ -38,8 +38,6 @@
 		},
 
 		right: function(collision) {
-			console.log(collision.obj.p.w);
-			console.log(this.entity.p.w);
 			if(collision.obj.isA("Food") || collision.obj.isA("Coin"))	// To avoid enemies to move the food.
 				this.entity.p.x += collision.obj.p.w + this.entity.p.w;
 			else if(collision.obj.isA("Ninja")) {
@@ -495,20 +493,19 @@
 		init: function(p) {
 			this._super(p, {
 				sheet: "acid",
-				sprite: "acid_anim",
-				sensor: true
+				sprite: "acid_anim"
 			});
 			
 			this.add("animation");
 
-			this.on("sensor");
+			this.on("hit", this, "collision");
 
 			this.play("acid_animation");
 		},
 
-		sensor: function() {
-			Q.stageScene("loseGame", 1);		
-			Q.stage().pause();
+		collision: function(col) {
+			if(col.obj.isA("Ninja"))
+				col.obj.die();
 		}
 	});
 
@@ -600,17 +597,17 @@
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja({x: 100, y: 500}));
-		/*var enemy = stage.insert(new Q.EnemyNinja({x: 310, y: 500}));
-		var robot = stage.insert(new Q.EnemyRobot({x: 310, y: 500}));*/
-		var food = stage.insert(new Q.Food({x: 400, y: 500}));
-		var coin = stage.insert(new Q.Coin({x:800, y:500}));
+		var enemy = stage.insert(new Q.EnemyNinja({x: 1000, y: 500}));
+		var robot = stage.insert(new Q.EnemyRobot({x: 1200, y: 500}));
+		var food = stage.insert(new Q.Food({x: 200, y: 500}));
+		var coin = stage.insert(new Q.Coin({x:300, y:500}));
 
-		/*var fan = stage.insert(new Q.Fan({x: 210, y: 536}));
+		var fan = stage.insert(new Q.Fan({x: 210, y: 536}));
 		var wind = stage.insert(new Q.Wind({x: fan.p.x, y: fan.p.y - 3.5*fan.p.h}));
 
-		var acid = stage.insert(new Q.Acid({x: 310, y: 500}));
+		var acid = stage.insert(new Q.Acid({x: 2000, y: 500}));
 
-		stage.insert(new Q.Fin());*/
+		stage.insert(new Q.Fin());
 
 		Q.state.reset({life: player.p.life, coin: 0});
 		Q.stageScene("HUD", 1);
