@@ -1,0 +1,5 @@
+{
+	"chicken" : {"sx":0,   "sy":0, "tileW":13, "tileH":12, "frames":1},
+	"rice"    : {"sx":13,  "sy":0, "tileW":13, "tileH":12, "frames":1},
+	"sushi"   : {"sx":26,  "sy":0, "tileW":13, "tileH":12, "frames":1}
+}

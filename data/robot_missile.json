@@ -1,0 +1,4 @@
+{
+	"missileL" : {"sx":0,   "sy":0, "tileW":13, "tileH":12, "frames":5},
+	"missileR" : {"sx":65,  "sy":0, "tileW":13, "tileH":12, "frames":5}
+}

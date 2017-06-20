@@ -1,0 +1,4 @@
+{
+	"kunaiR" : {"sx":0,  "sy":0,  "tileW":16, "tileH":16, "frames":9},
+	"kunaiL" : {"sx":32, "sy":16, "tileW":16, "tileH":16, "frames":9}
+}
