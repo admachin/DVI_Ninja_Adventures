@@ -217,7 +217,7 @@
 			this._super(p, {
 				sheet: "enemy_ninjaL",
 				sprite: "enemy_ninja_anim",
-				vx: -200,
+				vx: -80,
 				x: 0,
 				y: 0,
 				attacking: false, 
@@ -299,7 +299,7 @@
 			this._super(p, {
 				sheet: "enemy_robotL",
 				sprite: "enemy_robot_anim",
-				vx: -100,
+				vx: -35,
 				x: 0,
 				y: 0,
 				direction: "left",
@@ -578,32 +578,41 @@
 	    	outlineWidth: 1,
 	    	y: -20,*/
 	    }, function() {
-	    	//this.p.label = "Presed";
 	    	Q.clearStages();
 			Q.stageScene('level1');
 	    }), container);
 
+
 	    stage.insert(new Q.UI.Button({
-	    	label: "Créditos",
+	    	label: "Desarrolladores",
 	    	color: "white",
 	    	outlineWidth: 1,
 	    	y: 60
 	    }, function() {
-	    	//this.p.label = "Presed";
 	    	Q.clearStages();
-			Q.stageScene('Credits');
+			Q.stageScene('Desarrolladores');
 	    }), container);
 
-	    /*stage.insert(new Q.UI.Text({
-	    	label: "Créditos",
+	    stage.insert(new Q.UI.Button({
+	    	label: "Controles",
 	    	color: "white",
 	    	outlineWidth: 1,
-	    	y: 30
+	    	y: 100
 	    }, function() {
-	    	//this.p.label = "Presed";
-	    	//Q.clearStages();
-			//Q.stageScene('Credits');
-	    }), container);*/
+	    	Q.clearStages();
+			Q.stageScene('Controles');
+	    }), container);
+
+	    stage.insert(new Q.UI.Button({
+	    	label: "Fuentes",
+	    	color: "white",
+	    	outlineWidth: 1,
+	    	y: 140
+	    }, function() {
+	    	Q.clearStages();
+			Q.stageScene('Fuentes');
+	    }), container);
+
 	});
 
 	// Escenario nivel 1.
@@ -612,17 +621,61 @@
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja({x: 100, y: 500}));
-		/*var enemy = stage.insert(new Q.EnemyNinja({x: 1000, y: 500}));
-		var robot = stage.insert(new Q.EnemyRobot({x: 1200, y: 500}));
-		var food = stage.insert(new Q.Food({x: 200, y: 500}));
-		var coin = stage.insert(new Q.Coin({x:300, y:500}));
+		
+		//Comida
+		var food = stage.insert(new Q.Food({x: 160, y: 370}));
+		var food2 = stage.insert(new Q.Food({x: 1600, y: 250}));
+		var food3 = stage.insert(new Q.Food({x: 2270, y: 250}));
+		var food4 = stage.insert(new Q.Food({x: 2703, y: 450}));
+		var food5 = stage.insert(new Q.Food({x: 3060, y: 200}));
 
-		var fan = stage.insert(new Q.Fan({x: 210, y: 536}));
+		//Monedas
+		var coin = stage.insert(new Q.Coin({x:273, y:100}));
+		var coin2 = stage.insert(new Q.Coin({x:2865, y:100}));
+		var coin3 = stage.insert(new Q.Coin({x:2995, y:400}));
+
+		//Ventiladores
+		var fan = stage.insert(new Q.Fan({x: 350, y: 496}));
 		var wind = stage.insert(new Q.Wind({x: fan.p.x, y: fan.p.y - 3.5*fan.p.h}));
 
-		var acid = stage.insert(new Q.Acid({x: 2000, y: 500}));*/
+		var fan2 = stage.insert(new Q.Fan({x: 200, y: 200}));
+		var wind2 = stage.insert(new Q.Wind({x: fan2.p.x, y: fan2.p.y - 3.5*fan2.p.h}));
 
-		var master = stage.insert(new Q.Master({x: 500, y: 500}));
+		var fan3 = stage.insert(new Q.Fan({x: 800, y: 300}));
+		var wind3 = stage.insert(new Q.Wind({x: fan3.p.x, y: fan3.p.y - 3.5*fan3.p.h}));
+
+		var fan4 = stage.insert(new Q.Fan({x: 1000, y: 230}));
+		var wind4 = stage.insert(new Q.Wind({x: fan4.p.x, y: fan4.p.y - 3.5*fan4.p.h}));
+
+		var fan5 = stage.insert(new Q.Fan({x: 1800, y: 380}));
+		var wind5 = stage.insert(new Q.Wind({x: fan5.p.x, y: fan5.p.y - 3.5*fan5.p.h}));
+
+		var fan6 = stage.insert(new Q.Fan({x: 2375, y: 300}));
+		var wind6 = stage.insert(new Q.Wind({x: fan6.p.x, y: fan6.p.y - 3.5*fan6.p.h}));
+
+		//var fan7 = stage.insert(new Q.Fan({x: 2785, y: 420}));
+		//var wind7 = stage.insert(new Q.Wind({x: fan7.p.x, y: fan7.p.y - 3.5*fan7.p.h}));
+
+
+		var fan9 = stage.insert(new Q.Fan({x: 2785, y: 450}));
+		var wind9 = stage.insert(new Q.Wind({x: fan9.p.x, y: fan9.p.y - 3.5*fan9.p.h}));
+
+		var fan8 = stage.insert(new Q.Fan({x: 2930, y: 350}));
+		var wind8 = stage.insert(new Q.Wind({x: fan8.p.x, y: fan8.p.y - 3.5*fan8.p.h}));
+
+		//Enemigos
+			//Ninjas
+		var ninjaEnemy = stage.insert(new Q.EnemyNinja({x: 1300, y: 250}));
+		var ninjaEnemy2 = stage.insert(new Q.EnemyNinja({x: 1550, y: 500}));
+		var ninjaEnemy3 = stage.insert(new Q.EnemyNinja({x: 2550, y: 500}));
+		
+
+			//Robots
+		var robot = stage.insert(new Q.EnemyRobot({x: 2050, y: 300}));
+		var robot2 = stage.insert(new Q.EnemyRobot({x: 2550, y: 200}));
+
+
+		var master = stage.insert(new Q.Master({x: 3150, y: 100}));
 
 		Q.state.reset({life: player.p.life, coin: 0});
 		Q.stageScene("HUD", 1);
@@ -653,16 +706,10 @@
 		
 		var button2 = container.insert(new Q.UI.Button({
 			x: 0,
-			y: 150,
+			y: 50,
 			fill: "#CCCCCC",
             label: "Inicio"
         }));
-		var label2 = container.insert(new Q.UI.Text({
-			x: 0,
-			y: 90,
-			color: "white",
-			label: "Volver a la pantalla de inicio"
-		}));
 
 		button.on("click",function() {
 			Q.clearStages();
@@ -700,16 +747,10 @@
 
 		var button2 = container.insert(new Q.UI.Button({
 			x: 0,
-			y: 150,
+			y: 60,
 			fill: "#CCCCCC",
             label: "Inicio"
         }));
-		var label2 = container.insert(new Q.UI.Text({
-			x: 0,
-			y: 90,
-			color: "white",
-			label: "Volver a la pantalla de inicio"
-		}));
 
 		button.on("click",function() {
 			Q.clearStages();
@@ -725,7 +766,85 @@
 	});
 
 	// Creditos
-	Q.scene("Credits", function(stage) {
+	Q.scene("Controles", function(stage) {
+		var container = stage.insert(new Q.UI.Container({
+			x: Q.width/2,
+			y: Q.height/2,
+			border: 5,
+			fill: "rgba(0,0,0,0.5)"
+		}));
+		var button = container.insert(new Q.UI.Button({
+			x: 0,
+			y: 0,
+			fill: "#CCCCCC",
+            label: "Inicio"
+        }));
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -15 - button.p.h,
+			color: "black",
+			label: "Volver a inicio"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -240 - button.p.h,
+			color: "black",
+			label: "Controles: "
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -200 - button.p.h,
+			color: "white",
+			label: "Flechas Derecha e Izquierda: para moverse hacia delante y detras respectivamente."
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -175 - button.p.h,
+			color: "white",
+			label: "Flecha Arriba: para saltar (Existe la posibilidad de pegar un salto en el aire)."
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -150 - button.p.h,
+			color: "white",
+			label: "Flecha Abajo + Flecha Derecha/Izquierda: nos deslizamos (Sirve para atacar a los Enemigos)."
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -125 - button.p.h,
+			color: "white",
+			label: "Barra espaciadora: sacar la capa (Solo si estamos en el aire)."
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -100 - button.p.h,
+			color: "white",
+			label: "Z: atacar con espada (Sirve para atacar a los Enemigos)."
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -75 - button.p.h,
+			color: "white",
+			label: "X: lanza kunais (Sirve para atacar a los Enemigos)."
+		}));
+
+		button.on("click",function() {
+			Q.clearStages();
+			Q.stageScene('startMenu');
+		});
+
+		container.fit(20);
+	});
+
+	// Creditos
+	Q.scene("Desarrolladores", function(stage) {
 		var container = stage.insert(new Q.UI.Container({
 			x: Q.width/2,
 			y: Q.height/2,
@@ -748,7 +867,7 @@
 		var label = container.insert(new Q.UI.Text({
 			x: -40,
 			y: -175 - button.p.h,
-			color: "white",
+			color: "black",
 			label: "Desarrolladores: "
 		}));
 
@@ -773,18 +892,168 @@
 			label: "- Carlos Raspeño Priego"
 		}));
 
+		button.on("click",function() {
+			Q.clearStages();
+			Q.stageScene('startMenu');
+		});
+
+		container.fit(20);
+	});
+
+	// Creditos
+	Q.scene("Fuentes", function(stage) {
+		var container = stage.insert(new Q.UI.Container({
+			x: Q.width/2,
+			y: Q.height/2,
+			border: 5,
+			fill: "rgba(0,0,0,0.5)"
+		}));
+		var button = container.insert(new Q.UI.Button({
+			x: 0,
+			y: 300,
+			fill: "#CCCCCC",
+            label: "Inicio"
+        }));
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 50 + button.p.h,
-			color: "white",
-			label: "Gracias por Jugar"
+			y: 282 - button.p.h,
+			color: "black",
+			label: "Volver a inicio"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 100 + button.p.h,
+			y: -265 - button.p.h,
+			color: "black",
+			label: "Sprites: "
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -225 - button.p.h,
 			color: "white",
-			label: "Recursos obtenidos de http://www.gameart2d.com/"
+			label: "Personajes y Tiles: //www.gameart2d.com/"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -200 - button.p.h,
+			color: "white",
+			label: "Viento ventilador: http://piq.codeus.net/picture/209221/wind_element"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -175 - button.p.h,
+			color: "white",
+			label: "Hélice ventilador: http://ludumdare.com/compo/tag/sprites/"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -150   - button.p.h,
+			color: "white",
+			label: "Comida: https://es.pinterest.com/pin/568227677957155806/"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -125  - button.p.h,
+			color: "white",
+			label: "Explosión: http://fralexion.deviantart.com/gallery/48550334/Animation-Assets"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -90  - button.p.h,
+			color: "black",
+			label: "Sonidos:"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -50  - button.p.h,
+			color: "white",
+			label: "Comer: http://www.freesound.org/people/josepharaoh99/sounds/353067/"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -25  - button.p.h,
+			color: "white",
+			label: "Robot: http://www.freesound.org/people/ShahruhAudio/sounds/336882/"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 0  - button.p.h,
+			color: "white",
+			label: "Grito mujer: http://www.freesound.org/people/GabrielaUPF/sounds/220295/"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 25  - button.p.h,
+			color: "white",
+			label: "Grito hombre: http://www.freesound.org/people/HazMattt/sounds/187290/"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 50  - button.p.h,
+			color: "white",
+			label: "Game Over screen: http://www.freesound.org/people/Headphaze/sounds/234514/"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 75  - button.p.h,
+			color: "white",
+			label: "Game Over: http://www.freesound.org/people/landlucky/sounds/277403/"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 100 - button.p.h,
+			color: "white",
+			label: "Explosión: http://www.freesound.org/people/Omar%20Alvarado/sounds/199725/"
+		}));
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 125  - button.p.h,
+			color: "white",
+			label: "Kunai: http://www.freesound.org/people/LiamG_SFX/sounds/334238/"
+		}));
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 150  - button.p.h,
+			color: "white",
+			label: "Coin1: http://www.freesound.org/people/FenrirFangs/sounds/213985/"
+		}));
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 175  - button.p.h,
+			color: "white",
+			label: "Coin2: http://www.freesound.org/people/D%20W/sounds/140382/"
+		}));
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 200  - button.p.h,
+			color: "white",
+			label: "Coin3: http://www.freesound.org/people/ThatNinjaGuy/sounds/195779/"
+		}));
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 225  - button.p.h,
+			color: "white",
+			label: "Win1: http://www.freesound.org/people/Envywolf/sounds/392762/"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 250  - button.p.h,
+			color: "white",
+			label: "Win2: http://www.freesound.org/people/Tuudurt/sounds/275104/"
 		}));
 
 		button.on("click",function() {
