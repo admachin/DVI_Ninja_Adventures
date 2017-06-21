@@ -1,10 +1,7 @@
 	window.addEventListener("load", function() {
 	var Q = window.Q = Quintus({ development: true })
 				.include("Scenes, Sprites, Input, UI, Touch, TMX, 2D, Anim, Audio")
-				.setup({
-					width:  1000,
-					height: 1000
-				})
+				.setup({ maximize: true})
 				.controls()
 				.touch()
 				.enableSound();
@@ -581,15 +578,32 @@
 	    	outlineWidth: 1,
 	    	y: -20,*/
 	    }, function() {
-	    	this.p.label = "Presed";
+	    	//this.p.label = "Presed";
+	    	Q.clearStages();
+			Q.stageScene('level1');
 	    }), container);
 
-	    stage.insert(new Q.UI.Text({
+	    stage.insert(new Q.UI.Button({
+	    	label: "Créditos",
+	    	color: "white",
+	    	outlineWidth: 1,
+	    	y: 60
+	    }, function() {
+	    	//this.p.label = "Presed";
+	    	Q.clearStages();
+			Q.stageScene('Credits');
+	    }), container);
+
+	    /*stage.insert(new Q.UI.Text({
 	    	label: "Créditos",
 	    	color: "white",
 	    	outlineWidth: 1,
 	    	y: 30
-	    }), container);
+	    }, function() {
+	    	//this.p.label = "Presed";
+	    	//Q.clearStages();
+			//Q.stageScene('Credits');
+	    }), container);*/
 	});
 
 	// Escenario nivel 1.
@@ -636,11 +650,30 @@
 			color: "red",
 			label: "Game Over"
 		}));
+		
+		var button2 = container.insert(new Q.UI.Button({
+			x: 0,
+			y: 150,
+			fill: "#CCCCCC",
+            label: "Inicio"
+        }));
+		var label2 = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 90,
+			color: "white",
+			label: "Volver a la pantalla de inicio"
+		}));
 
 		button.on("click",function() {
 			Q.clearStages();
 			Q.stageScene('level1');
 		});
+
+		button2.on("click",function() {
+			Q.clearStages();
+			Q.stageScene('startMenu');
+		});
+
 
 		container.fit(20);
 	});
@@ -665,9 +698,98 @@
 			label: "Win Nakamura"
 		}));
 
+		var button2 = container.insert(new Q.UI.Button({
+			x: 0,
+			y: 150,
+			fill: "#CCCCCC",
+            label: "Inicio"
+        }));
+		var label2 = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 90,
+			color: "white",
+			label: "Volver a la pantalla de inicio"
+		}));
+
 		button.on("click",function() {
 			Q.clearStages();
 			Q.stageScene('level1');
+		});
+
+		button2.on("click",function() {
+			Q.clearStages();
+			Q.stageScene('startMenu');
+		});
+
+		container.fit(20);
+	});
+
+	// Creditos
+	Q.scene("Credits", function(stage) {
+		var container = stage.insert(new Q.UI.Container({
+			x: Q.width/2,
+			y: Q.height/2,
+			border: 5,
+			fill: "rgba(0,0,0,0.5)"
+		}));
+		var button = container.insert(new Q.UI.Button({
+			x: 0,
+			y: 0,
+			fill: "#CCCCCC",
+            label: "Inicio"
+        }));
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -15 - button.p.h,
+			color: "black",
+			label: "Volver a inicio"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: -40,
+			y: -175 - button.p.h,
+			color: "white",
+			label: "Desarrolladores: "
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 20,
+			y: -135 - button.p.h,
+			color: "white",
+			label: "- Adolfo Machín Fernández "
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -115 - button.p.h,
+			color: "white",
+			label: "- Fernando Rivilla Bravo"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -95 - button.p.h,
+			color: "white",
+			label: "- Carlos Raspeño Priego"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 50 + button.p.h,
+			color: "white",
+			label: "Gracias por Jugar"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 100 + button.p.h,
+			color: "white",
+			label: "Recursos obtenidos de http://www.gameart2d.com/"
+		}));
+
+		button.on("click",function() {
+			Q.clearStages();
+			Q.stageScene('startMenu');
 		});
 
 		container.fit(20);
@@ -848,7 +970,7 @@
 				coin_animation : {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/7, loop: true}
 			});
 
-			Q.stageScene("level1", 0);
+			Q.stageScene("startMenu", 0);
 			//Q.stageScene("startMenu", 0);
 		});
 	});
