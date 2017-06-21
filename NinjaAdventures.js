@@ -560,7 +560,7 @@
 	      y: Q.height/2,
 	      x: Q.width/2, 
 	      w: Q.width/2,
-	      h: Q.height/2
+	      h: (Q.height/2) + 60
 	    }));
 
 	    stage.insert(new Q.UI.Text({ 
@@ -769,7 +769,7 @@
 	Q.scene("Controles", function(stage) {
 		var container = stage.insert(new Q.UI.Container({
 			x: Q.width/2,
-			y: Q.height/2,
+			y: (Q.height/2) + 100,
 			border: 5,
 			fill: "rgba(0,0,0,0.5)"
 		}));
@@ -796,6 +796,7 @@
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
 			y: -200 - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Flechas Derecha e Izquierda: para moverse hacia delante y detras respectivamente."
 		}));
@@ -803,6 +804,7 @@
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
 			y: -175 - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Flecha Arriba: para saltar (Existe la posibilidad de pegar un salto en el aire)."
 		}));
@@ -810,6 +812,7 @@
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
 			y: -150 - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Flecha Abajo + Flecha Derecha/Izquierda: nos deslizamos (Sirve para atacar a los Enemigos)."
 		}));
@@ -817,6 +820,7 @@
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
 			y: -125 - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Barra espaciadora: sacar la capa (Solo si estamos en el aire)."
 		}));
@@ -824,6 +828,7 @@
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
 			y: -100 - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Z: atacar con espada (Sirve para atacar a los Enemigos)."
 		}));
@@ -831,6 +836,7 @@
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
 			y: -75 - button.p.h,
+			size: 18,
 			color: "white",
 			label: "X: lanza kunais (Sirve para atacar a los Enemigos)."
 		}));
@@ -910,148 +916,194 @@
 		}));
 		var button = container.insert(new Q.UI.Button({
 			x: 0,
-			y: 300,
+			y: 100,
 			fill: "#CCCCCC",
-            label: "Inicio"
+            label: "Siguiente"
         }));
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 282 - button.p.h,
+			y: 82 - button.p.h,
 			color: "black",
-			label: "Volver a inicio"
+			label: "Siguiente pagina"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: -265 - button.p.h,
+			y: -205 - button.p.h,
 			color: "black",
 			label: "Sprites: "
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: -225 - button.p.h,
+			y: -165 - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Personajes y Tiles: //www.gameart2d.com/"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: -200 - button.p.h,
+			y: -140 - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Viento ventilador: http://piq.codeus.net/picture/209221/wind_element"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: -175 - button.p.h,
+			y: -115 - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Hélice ventilador: http://ludumdare.com/compo/tag/sprites/"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: -150   - button.p.h,
+			y: -90   - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Comida: https://es.pinterest.com/pin/568227677957155806/"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: -125  - button.p.h,
+			y: -65  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Explosión: http://fralexion.deviantart.com/gallery/48550334/Animation-Assets"
 		}));
 
+		button.on("click",function() {
+			Q.clearStages();
+			Q.stageScene('Fuentes2');
+		});
+
+		container.fit(20);
+	});
+
+	Q.scene("Fuentes2", function(stage) {
+		var container = stage.insert(new Q.UI.Container({
+			x: Q.width/2,
+			y: Q.height/2,
+			border: 5,
+			fill: "rgba(0,0,0,0.5)"
+		}));
+		var button = container.insert(new Q.UI.Button({
+			x: 0,
+			y: 200,
+			fill: "#CCCCCC",
+            label: "Inicio"
+        }));
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: -90  - button.p.h,
+			y: 190 - button.p.h,
+			color: "black",
+			label: "Volver a inicio"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -205  - button.p.h,
 			color: "black",
 			label: "Sonidos:"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: -50  - button.p.h,
+			y: -165  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Comer: http://www.freesound.org/people/josepharaoh99/sounds/353067/"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: -25  - button.p.h,
+			y: -140  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Robot: http://www.freesound.org/people/ShahruhAudio/sounds/336882/"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 0  - button.p.h,
+			y: -115  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Grito mujer: http://www.freesound.org/people/GabrielaUPF/sounds/220295/"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 25  - button.p.h,
+			y: -90  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Grito hombre: http://www.freesound.org/people/HazMattt/sounds/187290/"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 50  - button.p.h,
+			y: -65  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Game Over screen: http://www.freesound.org/people/Headphaze/sounds/234514/"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 75  - button.p.h,
+			y: -40  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Game Over: http://www.freesound.org/people/landlucky/sounds/277403/"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 100 - button.p.h,
+			y: -15 - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Explosión: http://www.freesound.org/people/Omar%20Alvarado/sounds/199725/"
 		}));
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 125  - button.p.h,
+			y: 10  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Kunai: http://www.freesound.org/people/LiamG_SFX/sounds/334238/"
 		}));
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 150  - button.p.h,
+			y: 35  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Coin1: http://www.freesound.org/people/FenrirFangs/sounds/213985/"
 		}));
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 175  - button.p.h,
+			y: 60  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Coin2: http://www.freesound.org/people/D%20W/sounds/140382/"
 		}));
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 200  - button.p.h,
+			y: 85  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Coin3: http://www.freesound.org/people/ThatNinjaGuy/sounds/195779/"
 		}));
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 225  - button.p.h,
+			y: 110  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Win1: http://www.freesound.org/people/Envywolf/sounds/392762/"
 		}));
 
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 250  - button.p.h,
+			y: 135  - button.p.h,
+			size: 18,
 			color: "white",
 			label: "Win2: http://www.freesound.org/people/Tuudurt/sounds/275104/"
 		}));
