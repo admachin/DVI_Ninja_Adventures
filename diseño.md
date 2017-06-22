@@ -1,14 +1,14 @@
 ## Dise�o del juego
 
-###Descripción
+### Descripción
  
 Ninja Adventures es un juego de plataformas basado en el juego PID. El jugador tendrá que manejar las distintas habilidades del ninja para poder ir avanzando por el escenario a la vez que va eliminando los diferentes enemigos que le van surgiendo.
  
-###Ambientación
+### Ambientación
  
 El protagonista del juego se llama Nakamura, un ninja sanguinario que tendrá que salvar a su maestro Teki Kyoyo, el cual ha sido secuestrado por la banda criminal japonesa Yakuzaki. Para ello, deberá infiltrarse en la base del enemigo para salvar a su maestro de una muerte segura.
  
-###Mecánicas Centrales
+### Mecánicas Centrales
  
 Nakamura podrá moverse a izquierda y derecha, así como realizar saltos.
 También podrá planear, usando su capa especial de ninja, cuando se encuentre en el aire.
