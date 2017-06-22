@@ -4,6 +4,7 @@
 
 ### Sprites:
 
+   * Personajes y Tiles: //www.gameart2d.com/
    * Viento ventilador: http://piq.codeus.net/picture/209221/wind_element
    * Hélice ventilador: http://ludumdare.com/compo/tag/sprites/
    * Comida: 		   https://es.pinterest.com/pin/568227677957155806/
