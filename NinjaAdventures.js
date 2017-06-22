@@ -560,7 +560,7 @@
 	      y: Q.height/2,
 	      x: Q.width/2, 
 	      w: Q.width/2,
-	      h: (Q.height/2) + 60
+	      h: (Q.height/2) + 150
 	    }));
 
 	    stage.insert(new Q.UI.Text({ 
@@ -612,7 +612,6 @@
 	    	Q.clearStages();
 			Q.stageScene('Fuentes');
 	    }), container);
-
 	});
 
 	// Escenario nivel 1.
@@ -623,10 +622,10 @@
 		var player = stage.insert(new Q.Ninja({x: 100, y: 500}));
 		
 		//Comida
-		var food = stage.insert(new Q.Food({x: 160, y: 370}));
+		var food = stage.insert(new Q.Food({x: 160, y: 370, sheet: "rice", healPower: 200}));
 		var food2 = stage.insert(new Q.Food({x: 1600, y: 250}));
-		var food3 = stage.insert(new Q.Food({x: 2270, y: 250}));
-		var food4 = stage.insert(new Q.Food({x: 2703, y: 450}));
+		var food3 = stage.insert(new Q.Food({x: 2270, y: 250, sheet: "rice", healPower: 200}));
+		var food4 = stage.insert(new Q.Food({x: 2703, y: 450, sheet: "sushi", healPower: 100}));
 		var food5 = stage.insert(new Q.Food({x: 3060, y: 200}));
 
 		//Monedas
@@ -665,14 +664,14 @@
 
 		//Enemigos
 			//Ninjas
-		var ninjaEnemy = stage.insert(new Q.EnemyNinja({x: 1300, y: 250}));
-		var ninjaEnemy2 = stage.insert(new Q.EnemyNinja({x: 1550, y: 500}));
-		var ninjaEnemy3 = stage.insert(new Q.EnemyNinja({x: 2550, y: 500}));
+			var ninjaEnemy = stage.insert(new Q.EnemyNinja({x: 1300, y: 250}));
+			var ninjaEnemy2 = stage.insert(new Q.EnemyNinja({x: 1550, y: 500}));
+			var ninjaEnemy3 = stage.insert(new Q.EnemyNinja({x: 2550, y: 500}));
 		
 
 			//Robots
-		var robot = stage.insert(new Q.EnemyRobot({x: 2050, y: 300}));
-		var robot2 = stage.insert(new Q.EnemyRobot({x: 2550, y: 200}));
+			var robot = stage.insert(new Q.EnemyRobot({x: 2050, y: 300}));
+			var robot2 = stage.insert(new Q.EnemyRobot({x: 2550, y: 200}));
 
 
 		var master = stage.insert(new Q.Master({x: 3150, y: 100}));
