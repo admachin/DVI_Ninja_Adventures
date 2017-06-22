@@ -2,14 +2,15 @@
 
 
 
-### Imágenes:
-	#### Viento ventilador: http://piq.codeus.net/picture/209221/wind_element
-	### Hélice ventilador: http://ludumdare.com/compo/tag/sprites/
-	Comida: 		   https://es.pinterest.com/pin/568227677957155806/
-	Explosión:		   http://fralexion.deviantart.com/gallery/48550334/Animation-Assets
-	Moneda:			   https://www.colourbox.com/vector/dollar-coins-rotation-vector-11901677
-	Corazón:		   https://scratch.mit.edu/projects/108435060/
-	Maestro:		   http://pseudolonewolf.deviantart.com/art/Trainer-Sprites-Shirtless-Man-and-Old-Codger-311746819
+### Sprites:
+
+#### Viento ventilador: http://piq.codeus.net/picture/209221/wind_element
+### Hélice ventilador: http://ludumdare.com/compo/tag/sprites/
+Comida: 		   https://es.pinterest.com/pin/568227677957155806/
+Explosión:		   http://fralexion.deviantart.com/gallery/48550334/Animation-Assets
+Moneda:			   https://www.colourbox.com/vector/dollar-coins-rotation-vector-11901677
+Corazón:		   https://scratch.mit.edu/projects/108435060/
+Maestro:		   http://pseudolonewolf.deviantart.com/art/Trainer-Sprites-Shirtless-Man-and-Old-Codger-311746819
 
 
 Sonidos:
