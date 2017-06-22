@@ -28,7 +28,7 @@
 
 * "level1" implementa el nivel en el que se juega y las caracteristicas de este, como son el reparto de items y enemigos por las distintas partes del mapeado.
 
-* "startMenu" contiene el menu principal del juego, este contiene botones para emepzar a jugar y ver informacion del desarrollo del mismo como los desarrolladores (implementado en "Desarrolladores"), controles del juego (implementado en "Controles"), y las principales fuentes que se han utilizado para el desarrollo del juego (implementadas en "Fuentes" y "Fuentes2").
+* "startMenu" contiene el menu principal del juego, este contiene botones para empezar a jugar y ver informacion del desarrollo del mismo como los desarrolladores (implementado en "Desarrolladores"), controles del juego (implementado en "Controles"), y las principales fuentes que se han utilizado para el desarrollo del juego (implementadas en "Fuentes" y "Fuentes2").
 
 * "loseGame" implementa la pantalla de partida perdida y "winGame" la pantalla de partida ganada.
 
