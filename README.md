@@ -3,7 +3,7 @@
 
 ### Indice
 
-* [Diseño del juego](diseño.md)  
+* [Diseño del juego](diseno.md)  
 
 * [Diseño de la implementación](implementacion.md)   
 
