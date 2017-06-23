@@ -6,7 +6,7 @@
 				.touch()
 				.enableSound();
 
-	//defaultEnemy
+	// Componente enemigo por defecto.
 	Q.component("defaultEnemy", {
 		added: function() {
 			this.entity.on("bump.left", this, "left");
@@ -68,6 +68,7 @@
 		}
 	});
 
+	// Ninja.
 	Q.Sprite.extend("Ninja",{
 		init: function(p) {
 			this._super(p, {
@@ -186,6 +187,7 @@
 		}
 	});
 
+	// Ventilador.
 	Q.Sprite.extend("Fan", {	// Sprite to represent the fan itself.
 		init: function(p) {
 			this._super(p, {
@@ -200,6 +202,7 @@
 		}
 	});
 	
+	// Viento.
 	Q.Sprite.extend("Wind", {	// Sprite with no sheet to make ninja fly when he goes into it.
 		init: function(p) {
 			this._super(p, {
@@ -212,7 +215,7 @@
 		}
 	});
 
-	//Enemigo Ninja
+	// Enemigo Ninja
 	Q.Sprite.extend("EnemyNinja", {
 		init: function(p) {
 			this._super(p, {
@@ -294,7 +297,7 @@
 		}
 	});
 
-	//Enemigo Robot
+	// Enemigo Robot
 	Q.Sprite.extend("EnemyRobot", {
 		init: function(p) {
 			this._super(p, {
@@ -394,6 +397,7 @@
 		}
 	});
 
+	// Misil robot.
 	Q.Sprite.extend("RobotMissile", {
 		init: function(p) {
 			this._super(p, {
@@ -439,6 +443,7 @@
 		}
 	});
 
+	// Kunani Ninja.
 	Q.Sprite.extend("NinjaKunai", {
 		init: function(p) {
 			this._super(p, {
@@ -469,7 +474,7 @@
 		}	
 	});
 
-	//Boss
+	// Boss.
 	Q.Sprite.extend("Boss", {
 		init: function(p) {
 			this._super(p, {
@@ -543,7 +548,7 @@
 		}
 	});
 
-
+	// Maestro.
 	Q.Sprite.extend("Master", {
 		init: function(p) {
 			this._super(p, {
@@ -564,6 +569,7 @@
 		}
 	});
 
+	// Ácido.
 	Q.Sprite.extend("Acid", {
 		init: function(p) {
 			this._super(p, {
@@ -584,6 +590,7 @@
 		}
 	});
 
+	// Comida.
 	Q.Sprite.extend("Food", {
 		init: function(p) {
 			this._super(p, {
@@ -604,6 +611,7 @@
 		}
 	});
 
+	// Moneda.
 	Q.Sprite.extend("Coin", {
 		init: function(p) {
 			this._super(p, {
@@ -628,7 +636,13 @@
 		// Hacer sensor con el sprite y que añada al state la puncuación.
 	});
 
+	// Menú de inicio.
 	Q.scene("startMenu", function(stage) {
+		Q.audio.stop("music_main");
+		Q.audio.stop("game_over");
+		Q.audio.stop("game_over_screen");
+		Q.audio.stop("win_game");
+		Q.audio.stop("monster_die");
 		var container = stage.insert(new Q.UI.Container({
 	      fill: "gray",
 	      border: 5,
@@ -655,6 +669,7 @@
 	    	outlineWidth: 1,
 	    	y: -20,*/
 	    }, function() {
+	    	Q.audio.play("menu_select");
 	    	Q.clearStages();
 			Q.stageScene('level1');
 	    }), container);
@@ -666,6 +681,7 @@
 	    	outlineWidth: 1,
 	    	y: 60
 	    }, function() {
+	    	Q.audio.play("menu_select");
 	    	Q.clearStages();
 			Q.stageScene('Desarrolladores');
 	    }), container);
@@ -676,6 +692,7 @@
 	    	outlineWidth: 1,
 	    	y: 100
 	    }, function() {
+	    	Q.audio.play("menu_select");
 	    	Q.clearStages();
 			Q.stageScene('Controles');
 	    }), container);
@@ -686,6 +703,7 @@
 	    	outlineWidth: 1,
 	    	y: 140
 	    }, function() {
+	    	Q.audio.play("menu_select");
 	    	Q.clearStages();
 			Q.stageScene('Fuentes');
 	    }), container);
@@ -693,7 +711,11 @@
 
 	// Escenario nivel 1.
 	Q.scene("level1", function(stage) {
-		Q.audio.stop();
+		Q.audio.stop("music_main");
+		Q.audio.stop("game_over");
+		Q.audio.stop("game_over_screen");
+		Q.audio.stop("win_game");
+		Q.audio.stop("monster_die");
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja({x: 100, y: 550}));
@@ -766,7 +788,11 @@
 
 	// Escenario nivel 1.
 	Q.scene("level2", function(stage) {
-		Q.audio.stop();
+		Q.audio.stop("music_main");
+		Q.audio.stop("game_over");
+		Q.audio.stop("game_over_screen");
+		Q.audio.stop("win_game");
+		Q.audio.stop("monster_die");
 		Q.stageTMX("level2.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja({x: 100, y: 550}));
@@ -860,11 +886,13 @@
         }));
 
 		button.on("click",function() {
+			Q.audio.play("menu_select");
 			Q.clearStages();
 			Q.stageScene('level1');
 		});
 
 		button2.on("click",function() {
+			Q.audio.play("menu_select");
 			Q.clearStages();
 			Q.stageScene('startMenu');
 		});
@@ -901,6 +929,7 @@
         }));
 
 		button.on("click",function() {
+			Q.audio.play("menu_select");
 			Q.clearStages();
 			Q.stageScene('level1');
 		});
@@ -913,6 +942,7 @@
 		container.fit(20);
 	});
 
+	// Escenario nivel completado.
 	Q.scene("levelComplete", function(stage) {
 		var container = stage.insert(new Q.UI.Container({
 			x: Q.width/2,
@@ -933,6 +963,7 @@
 		}));
 
 		button.on("click",function() {
+			Q.audio.play("menu_select");
 			Q.clearStage(0);
 			Q.clearStage(2);
 			Q.stageScene('level2');
@@ -941,7 +972,7 @@
 		container.fit(20);
 	});
 
-	// Creditos
+	// Controles.
 	Q.scene("Controles", function(stage) {
 		var container = stage.insert(new Q.UI.Container({
 			x: Q.width/2,
@@ -1018,6 +1049,7 @@
 		}));
 
 		button.on("click",function() {
+			Q.audio.play("menu_select");
 			Q.clearStages();
 			Q.stageScene('startMenu');
 		});
@@ -1025,7 +1057,7 @@
 		container.fit(20);
 	});
 
-	// Creditos
+	// Créditos.
 	Q.scene("Desarrolladores", function(stage) {
 		var container = stage.insert(new Q.UI.Container({
 			x: Q.width/2,
@@ -1075,6 +1107,7 @@
 		}));
 
 		button.on("click",function() {
+			Q.audio.play("menu_select");
 			Q.clearStages();
 			Q.stageScene('startMenu');
 		});
@@ -1082,7 +1115,7 @@
 		container.fit(20);
 	});
 
-	// Creditos
+	// Fuentes 1.
 	Q.scene("Fuentes", function(stage) {
 		var container = stage.insert(new Q.UI.Container({
 			x: Q.width/2,
@@ -1151,6 +1184,7 @@
 		}));
 
 		button.on("click",function() {
+			Q.audio.play("menu_select");
 			Q.clearStages();
 			Q.stageScene('Fuentes2');
 		});
@@ -1158,6 +1192,7 @@
 		container.fit(20);
 	});
 
+	// Fuentes 2.
 	Q.scene("Fuentes2", function(stage) {
 		var container = stage.insert(new Q.UI.Container({
 			x: Q.width/2,
@@ -1167,13 +1202,13 @@
 		}));
 		var button = container.insert(new Q.UI.Button({
 			x: 0,
-			y: 200,
+			y: 250,
 			fill: "#CCCCCC",
             label: "Inicio"
         }));
 		var label = container.insert(new Q.UI.Text({
 			x: 0,
-			y: 190 - button.p.h,
+			y: 230 - button.p.h,
 			color: "black",
 			label: "Volver a inicio"
 		}));
@@ -1284,7 +1319,24 @@
 			label: "Win2: http://www.freesound.org/people/Tuudurt/sounds/275104/"
 		}));
 
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 160  - button.p.h,
+			size: 18,
+			color: "white",
+			label: "Boss Die: http://freesound.org/people/Robinhood76/sounds/66725/"
+		}));
+
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: 185  - button.p.h,
+			size: 18,
+			color: "white",
+			label: "Menu select: http://freesound.org/people/fins/sounds/146721/"
+		}));		
+
 		button.on("click",function() {
+			Q.audio.play("menu_select");
 			Q.clearStages();
 			Q.stageScene('startMenu');
 		});
@@ -1292,7 +1344,7 @@
 		container.fit(20);
 	});
 
-	// Escenario para el HUD.
+	// HUD.
 	Q.scene("HUD", function(stage) {
 		var life_icon = stage.insert(new Q.UI.Button({
 			x:30,
@@ -1359,7 +1411,8 @@
 			"kunai_noise"      : "kunai.mp3",
 			"coin_catched"	   : "coin_catched.mp3",
 			"win_game"		   : "win.mp3",
-			"monster_die"	   : "monster_die.mp3"
+			"monster_die"	   : "monster_die.mp3",
+			"menu_select"	   : "menu_select.mp3"
 		}, function() {
 			Q.animations("wind_anim", {
 				wind_animation: { frames: [0, 1, 2, 3, 4, 5], rate: 1/6, loop: true}
