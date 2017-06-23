@@ -4,17 +4,17 @@
 
 * El comportamiento del personaje principal esta definido en "Ninja". Este puede correr, saltar, realizar dobles saltos, planear, deslizarse por el suelo, atacar con la espada y lanzar kunais.
 
-* Se ha creado un componente llamado defaultEnemy que incorpora las colisiones comunes a todos los enemigos, al hacer esto se reduce el codigo repetido en las funciones que implementan el comportamiento de los enemigos, que son dos, "EnemyNinja", y "EnemyRobot".
+* Se ha creado un componente llamado defaultEnemy que incorpora las colisiones comunes a todos los enemigos, al hacer esto se reduce el codigo repetido en las funciones que implementan el comportamiento de los enemigos, que son tres, "EnemyNinja", "EnemyRobot" y "Boss".
 
 * "EnemyNinja" incorpora el comportamiento del enemigo ninja, este comportamiento consiste en desplazarse por el escenario y en caso de encontrarse con el protagonista, atacarle en la direccion en la que su sprite colisiona con el del protagonista.
 
 * El comportamiento de "EnemyRobot" es similar al de "EnemyNinja" pero este ademas realiza disparos de bolas de fuego para herir al protagonista.
 
-* El Boss define el enemigo a vencer al final del primer nivel y está basado al igual que el resto de enemgos en el componente "defaultEnemy".
+* El "Boss" define el enemigo a vencer al final del primer nivel y está basado al igual que el resto de enemgos en el componente "defaultEnemy".
 
-* "Fan" implementa el sprite del ventilador.
+* "Fan" implementa la base de los ventiladores con los que el usuario si realiza colisiones.
 
-* "Wind" implementa un sprite sin sheet que hace que el ninja vuele cuando lo toca.
+* "Wind" en cambio representa el viento que empuja el ventilador al moverse. Esta programado de tal forma que al detectar la colisión con el jugador realiza los cálculos inversos a los que realiza Quintus para resolverla por lo que el usuario es capaz de entrar dentro de este objeto. Cuando el usuario se encuentra dentro de "Wind" si pulsa el botón espacio puede elevarse usando la capa del ninja.
 
 * "RobotMissile" define los proyectiles que lanza "EnemyRobot" al disparar.
 
@@ -30,7 +30,7 @@
 
 * "level1" implementa el nivel en el que se juega y las caracteristicas de este, como son el reparto de items y enemigos por las distintas partes del mapeado. Al terminarlo hay un menú que permite pasar al siguiente nivel.
 
-* "level1" implementa el nivel en el que se juega y las caracteristicas de este, como son el reparto de items y enemigos por las distintas partes del mapeado. Al final de éste se encuentra el Maestro que finaliza el juego.
+* "level2" implementa el nivel en el que se juega y las caracteristicas de este, como son el reparto de items y enemigos por las distintas partes del mapeado. Al final de éste se encuentra el Maestro que finaliza el juego.
 
 * "startMenu" contiene el menu principal del juego, este contiene botones para empezar a jugar y ver informacion del desarrollo del mismo como los desarrolladores (implementado en "Desarrolladores"), controles del juego (implementado en "Controles"), y las principales fuentes que se han utilizado para el desarrollo del juego (implementadas en "Fuentes" y "Fuentes2").
 
