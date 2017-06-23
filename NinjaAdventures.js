@@ -154,7 +154,7 @@
 					this.play("throw_" + this.p.direction, 1);
 				if(this.p.vy != 0) {							// En el aire cayendo.
 					if(this.p.flying)
-						this.play("glide_" + this.p.direction);
+						this.play("glide_" + this.p.direction, 2);
 					else {
 						if(Q.inputs['attack'] || this.p.attacking)
 							this.play("attack_jump_" + this.p.direction, 1);
@@ -247,7 +247,7 @@
 
 		die: function() {
 			Q.audio.play("woman_scream", {debounce: 500});
-			this.play("die_" + this.p.direction, 1);
+			this.play("die_" + this.p.direction, 2);
 		},
 
 		delete: function() {
@@ -415,15 +415,16 @@
 		},
 
 		collision: function(col) {
-			if(col.obj.isA("Ninja"))
+			if(col.obj.isA("Ninja")){
 				col.obj.damage(this.p.damage);
-			else
-				this.destroy();
+			}
+			this.destroy();
 			Q.audio.play("explosion", {debounce: 500});
-			this.vx = 0;
+			
 			this.p.sheet = "explosion";
 			this.p.sprite = "explosion_anim";
-			this.play("explosion_animation", 1);		
+			this.play("explosion_animation", 1);
+				
 		},
 
 		delete: function() {
@@ -466,6 +467,81 @@
 				this.destroy();
 		}	
 	});
+
+	//Boss
+	Q.Sprite.extend("Boss", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "bossL",
+				sprite: "boss_anim",
+				vx: -80,
+				x: 0,
+				y: 0,
+				attacking: false, 
+				attack: 400,
+				direction: "left",
+				life: 1000,
+				reloadTime: 0.5,
+				reload: 0.5
+			});
+
+			this.add('2d, aiBounce, defaultEnemy, animation');
+		},
+
+		damage: function(attack){
+			if(this.p.reload < 0){
+				this.p.reload = this.p.reloadTime;
+				this.p.life -= attack;
+				if(this.p.life <= 0){
+					this.die();
+				}
+			}	
+		},
+
+		die: function() {
+			Q.audio.stop("music_main");
+			Q.audio.play("monster_die");
+			Q.stage().pause();
+			Q.stageScene("levelComplete", 1);
+		},
+
+		delete: function() {
+			this.destroy();
+		},
+
+		attack: function(){
+			this.p.attacking = true;
+			if(this.p.direction == "right")
+				this.p.vx = 200;
+			else
+				this.p.vx = -200;
+		},
+
+		finishAttack: function() {
+			if(this.p.direction == "left")
+				this.p.vx = -200;
+			else
+				this.p.vx = 200;
+
+	  		this.p.attacking = false;
+	  	},
+
+		step: function(dt) {
+			this.p.reload-=dt;
+			if(this.p.y > 3500)
+				this.die();
+			if(this.p.vy == 0) {		// Sin caer.
+				
+				if(this.p.vx > 0)
+					this.p.direction = "right";
+				else if(this.p.vx < 0)
+					this.p.direction = "left";
+				this.play("boss_" + this.p.direction);
+		      		
+		    }
+		}
+	});
+
 
 	Q.Sprite.extend("Master", {
 		init: function(p) {
@@ -619,7 +695,80 @@
 		Q.audio.stop();
 		Q.stageTMX("level.tmx", stage);
 
-		var player = stage.insert(new Q.Ninja({x: 100, y: 500}));
+		var player = stage.insert(new Q.Ninja({x: 100, y: 550}));
+		var boss = stage.insert(new Q.Boss({x:2900, y:200, vx: -50}));
+		
+		//Comida
+		var food = stage.insert(new Q.Food({x: 465, y: 465, sheet: "rice", healPower: 200}));
+		var food2 = stage.insert(new Q.Food({x: 592, y: 465}));
+		var food3 = stage.insert(new Q.Food({x: 720, y: 465, sheet: "sushi", healPower: 100}));
+		//var food4 = stage.insert(new Q.Food({x: 2703, y: 450, sheet: "sushi", healPower: 100}));
+		//var food5 = stage.insert(new Q.Food({x: 3060, y: 200}));
+
+		//Monedas
+		var coin = stage.insert(new Q.Coin({x:530, y:465}));
+		var coin2 = stage.insert(new Q.Coin({x:655, y:465}));
+		//var coin3 = stage.insert(new Q.Coin({x:2995, y:400}));
+		
+		//Ventiladores
+		var fan = stage.insert(new Q.Fan({x: 420, y: 250}));
+		var wind = stage.insert(new Q.Wind({x: fan.p.x, y: fan.p.y - 3.5*fan.p.h}));
+
+		var fan2 = stage.insert(new Q.Fan({x: 900, y: 400}));
+		var wind2 = stage.insert(new Q.Wind({x: fan2.p.x, y: fan2.p.y - 3.5*fan2.p.h}));
+
+		var fan3 = stage.insert(new Q.Fan({x: 1050, y: 450}));
+		var wind3 = stage.insert(new Q.Wind({x: fan3.p.x, y: fan3.p.y - 3.5*fan3.p.h}));
+
+		var fan4 = stage.insert(new Q.Fan({x: 670, y: 200}));
+		var wind4 = stage.insert(new Q.Wind({x: fan4.p.x, y: fan4.p.y - 3.5*fan4.p.h}));
+
+		var fan5 = stage.insert(new Q.Fan({x: 1400, y: 380}));
+		var wind5 = stage.insert(new Q.Wind({x: fan5.p.x, y: fan5.p.y - 3.5*fan5.p.h}));
+
+		var fan6 = stage.insert(new Q.Fan({x: 1600, y: 350}));
+		var wind6 = stage.insert(new Q.Wind({x: fan6.p.x, y: fan6.p.y - 3.5*fan6.p.h}));
+
+		var fan9 = stage.insert(new Q.Fan({x: 1800, y: 280}));
+		var wind9 = stage.insert(new Q.Wind({x: fan9.p.x, y: fan9.p.y - 3.5*fan9.p.h}));
+
+		var fan8 = stage.insert(new Q.Fan({x: 2000, y: 230}));
+		var wind8 = stage.insert(new Q.Wind({x: fan8.p.x, y: fan8.p.y - 3.5*fan8.p.h}));
+
+		var fan7 = stage.insert(new Q.Fan({x: 2200, y: 200}));
+		var wind7 = stage.insert(new Q.Wind({x: fan7.p.x, y: fan7.p.y - 3.5*fan7.p.h}));
+
+		var fan10 = stage.insert(new Q.Fan({x: 2400, y: 170}));
+		var wind10 = stage.insert(new Q.Wind({x: fan10.p.x, y: fan10.p.y - 3.5*fan10.p.h}));
+
+		
+		//Enemigos
+			//Ninjas
+			var ninjaEnemy = stage.insert(new Q.EnemyNinja({x: 500, y: 500}));
+			var ninjaEnemy2 = stage.insert(new Q.EnemyNinja({x: 1000, y: 500}));
+			var ninjaEnemy3 = stage.insert(new Q.EnemyNinja({x: 600, y: 300}));
+		
+
+			//Robots
+			var robot = stage.insert(new Q.EnemyRobot({x: 530, y: 400}));
+			var robot2 = stage.insert(new Q.EnemyRobot({x: 800, y: 500}));
+			var robot3 = stage.insert(new Q.EnemyRobot({x: 1000, y: 200}));
+
+		//var master = stage.insert(new Q.Master({x: 3150, y: 100}));
+
+		Q.state.reset({life: player.p.life, coin: 0});
+		Q.stageScene("HUD", 1);
+		stage.add("viewport").follow(player);
+		stage.viewport.scale = 1.5;
+		Q.audio.play("music_main", {loop: true});
+	});
+
+	// Escenario nivel 1.
+	Q.scene("level2", function(stage) {
+		Q.audio.stop();
+		Q.stageTMX("level2.tmx", stage);
+
+		var player = stage.insert(new Q.Ninja({x: 100, y: 550}));
 		
 		//Comida
 		var food = stage.insert(new Q.Food({x: 160, y: 370, sheet: "rice", healPower: 200}));
@@ -675,9 +824,7 @@
 
 
 		var master = stage.insert(new Q.Master({x: 3150, y: 100}));
-
-		Q.state.reset({life: player.p.life, coin: 0});
-		Q.stageScene("HUD", 1);
+		
 		stage.add("viewport").follow(player);
 		stage.viewport.scale = 1.5;
 		Q.audio.play("music_main", {loop: true});
@@ -759,6 +906,33 @@
 		button2.on("click",function() {
 			Q.clearStages();
 			Q.stageScene('startMenu');
+		});
+
+		container.fit(20);
+	});
+
+	Q.scene("levelComplete", function(stage) {
+		var container = stage.insert(new Q.UI.Container({
+			x: Q.width/2,
+			y: Q.height/2,
+			fill: "rgba(0,0,0,0.5)"
+		}));
+		var button = container.insert(new Q.UI.Button({
+			x: 0,
+			y: 0,
+			fill: "#CCCCCC",
+            label: "Next level"
+        }));
+		var label = container.insert(new Q.UI.Text({
+			x: 0,
+			y: -15 - button.p.h,
+			color: "green",
+			label: "Level complete!"
+		}));
+
+		button.on("click",function() {
+			Q.clearStages();
+			Q.stageScene('level2');
 		});
 
 		container.fit(20);
@@ -1156,7 +1330,7 @@
 		});
 	});
 
-	Q.loadTMX("level.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json, food.png, food.json, robot_missile.png, robot_missile.png, robot_missile.json, explosion.png, explosion.json, kunai.png, kunai.json, coin.png, coin.json, coin_HUD.png, heart_HUD.png, master.png, master.json", function() {
+	Q.loadTMX("level.tmx, level2.tmx, ninja.png, ninja.json, wind.png, wind.json, fan.png, fan.json, acid.png, acid.json, enemy_ninja.png, enemy_ninja.json, enemy_robot.png, enemy_robot.json, food.png, food.json, robot_missile.png, robot_missile.png, robot_missile.json, explosion.png, explosion.json, kunai.png, kunai.json, coin.png, coin.json, coin_HUD.png, heart_HUD.png, bowser.png, bowser.json, master.png, master.json", function() {
 		Q.compileSheets("ninja.png", "ninja.json");
 		Q.compileSheets("wind.png", "wind.json");
 		Q.compileSheets("fan.png", "fan.json");
@@ -1168,6 +1342,7 @@
 		Q.compileSheets("explosion.png", "explosion.json");
 		Q.compileSheets("kunai.png", "kunai.json");
 		Q.compileSheets("coin.png", "coin.json");
+		Q.compileSheets("bowser.png", "bowser.json");
 		Q.compileSheets("master.png", "master.json");
 		Q.load({
 			"music_main"       : "music_main.mp3",
@@ -1180,7 +1355,8 @@
 			"explosion"		   : "explosion.mp3",
 			"kunai_noise"      : "kunai.mp3",
 			"coin_catched"	   : "coin_catched.mp3",
-			"win_game"		   : "win.mp3"
+			"win_game"		   : "win.mp3",
+			"monster_die"	   : "monster_die.mp3"
 		}, function() {
 			Q.animations("wind_anim", {
 				wind_animation: { frames: [0, 1, 2, 3, 4, 5], rate: 1/6, loop: true}
@@ -1224,9 +1400,6 @@
 
 				throw_left		  : {frames: [160, 161, 162, 163, 164, 165, 166, 167, 168, 169], rate: 1/10, loop: false, trigger: "throwKunai"},
 				throw_right	      : {frames: [170, 171, 172, 173, 174, 175, 176, 177, 178, 179], rate: 1/10, loop: false, trigger: "throwKunai"}
-				/*
-				climb: { frames: [0,1,2,3,4,5,6,7,8,9], rate: 1/10, loop: true }, // Climb_
-				*/
 			});
 
 			Q.animations("enemy_ninja_anim", {
@@ -1284,6 +1457,11 @@
 			Q.animations("kunai_anim", {
 				kunai_right : {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8], rate: 1/18, loop: true},
 				kunai_left  : {frames: [9, 10, 11, 12, 13, 14, 15, 16, 17], rate: 1/9, loop: true}
+			});
+
+			Q.animations("boss_anim", {
+				boss_right : {frames: [0, 1, 2, 3], rate: 1/2, loop: true},
+				boss_left  : {frames: [4, 5, 6, 7], rate: 1/2, loop: true}
 			});
 
 			Q.animations("coin_anim", {
