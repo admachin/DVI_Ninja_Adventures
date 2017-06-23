@@ -5,6 +5,7 @@
 				.controls()
 				.touch()
 				.enableSound();
+
 	//defaultEnemy
 	Q.component("defaultEnemy", {
 		added: function() {
@@ -825,6 +826,7 @@
 
 		var master = stage.insert(new Q.Master({x: 3150, y: 100}));
 		
+		Q.stageScene("HUD", 1);
 		stage.add("viewport").follow(player);
 		stage.viewport.scale = 1.5;
 		Q.audio.play("music_main", {loop: true});
