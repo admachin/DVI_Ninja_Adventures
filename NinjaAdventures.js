@@ -503,7 +503,7 @@
 			Q.audio.stop("music_main");
 			Q.audio.play("monster_die");
 			Q.stage().pause();
-			Q.stageScene("levelComplete", 1);
+			Q.stageScene("levelComplete", 2);
 		},
 
 		delete: function() {
@@ -697,7 +697,8 @@
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja({x: 100, y: 550}));
-		var boss = stage.insert(new Q.Boss({x:2900, y:200, vx: -50}));
+		//var boss = stage.insert(new Q.Boss({x:2900, y:200, vx: -50}));
+		var boss = stage.insert(new Q.Boss({x:200, y:200, vx: 0}));
 		
 		//Comida
 		var food = stage.insert(new Q.Food({x: 465, y: 465, sheet: "rice", healPower: 200}));
@@ -826,7 +827,7 @@
 
 		var master = stage.insert(new Q.Master({x: 3150, y: 100}));
 		
-		Q.stageScene("HUD", 1);
+		//Q.stageScene("HUD", 1);
 		stage.add("viewport").follow(player);
 		stage.viewport.scale = 1.5;
 		Q.audio.play("music_main", {loop: true});
@@ -933,7 +934,8 @@
 		}));
 
 		button.on("click",function() {
-			Q.clearStages();
+			Q.clearStage(0);
+			Q.clearStage(2);
 			Q.stageScene('level2');
 		});
 
