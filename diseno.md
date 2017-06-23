@@ -1,4 +1,4 @@
-## Dise�o del juego
+## Diseño del juego
 
 ### Descripción
  
