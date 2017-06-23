@@ -697,8 +697,7 @@
 		Q.stageTMX("level.tmx", stage);
 
 		var player = stage.insert(new Q.Ninja({x: 100, y: 550}));
-		//var boss = stage.insert(new Q.Boss({x:2900, y:200, vx: -50}));
-		var boss = stage.insert(new Q.Boss({x:200, y:200, vx: 0}));
+		var boss = stage.insert(new Q.Boss({x:2900, y:200, vx: -50}));
 		
 		//Comida
 		var food = stage.insert(new Q.Food({x: 465, y: 465, sheet: "rice", healPower: 200}));
